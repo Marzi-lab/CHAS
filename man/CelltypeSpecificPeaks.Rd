@@ -2,9 +2,9 @@
 % Please edit documentation in R/CHAS.R
 \name{CelltypeSpecificPeaks}
 \alias{CelltypeSpecificPeaks}
-\title{Identify celltype-specific H3K27ac peaks}
+\title{Identify celltype-specific H3K27ac peaks which overlap > x\% of the celltype}
 \usage{
-CelltypeSpecificPeaks(bulkPeaks, celltype)
+CelltypeSpecificPeaks(bulkPeaks, celltype, CelltypeOverlap, x)
 }
 \arguments{
 \item{bulkPeaks}{A data frame of bulk H3K27ac peaks in BED format, with the first
@@ -13,13 +13,15 @@ position of the peak, the third column containing the end position of the peak, 
 the fourth column containing the peak identifier.}
 
 \item{celltype}{A character specifying the celltype of interest.}
+
+\item{CelltypeOverlap}{output of the BulkCelltypeOverlap function for the celltype of interest.}
+
+\item{x}{A number between 0 and 1 specifying the minimum overlap between the bulk peak and the celltype peak.}
 }
 \value{
 A data frame containing bulk H3K27ac peaks which are celltype-specific.
 }
 \description{
-This function identifies which bulk H3K27ac peaks are specific to a celltype.
-Bulk H3K27ac peaks which overlap more than one cell type are annotated to "Multiple",
-and those that do not overlap any of the celltypes investigated are annotated to
-"Other".
+This function identifies which bulk H3K27ac peaks are specific to a celltype peak,
+and overlap >x\% of it.
 }

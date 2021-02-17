@@ -4,7 +4,7 @@
 \alias{CelltypeScore}
 \title{Calculate a celltype-specific histone acetylation score}
 \usage{
-CelltypeScore(cpm, MinOverlapPeaks)
+CelltypeScore(cpm, CelltypeSpecificPeaks)
 }
 \arguments{
 \item{cpm}{A counts per million matrix with rows labeling peaks and columns labeling
