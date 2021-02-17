@@ -1,0 +1,17 @@
+Package: CHAS
+Title: Cell type deconvolution of bulk tissue histone acetylomes from epigenetic data
+Version: 0.0.0.9000
+Description: CHAS is an R package which integrates cell sorted H3K27ac data to identify cell type-specific peaks in bulk tissue histone acetylomes. Using the cell type-specific H3K27ac peaks, one can then calculate cell type-specific acetylation scores to act as a proxy for cell type proportion in the bulk tissue sample.
+Authors@R: 
+    person(given = "Kitty",
+           family = "Murphy",
+           role = c("aut", "cre"),
+           email = "c.murphy19@ic.ac.uk",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Imports: GenomicRanges
+License: `use_mit_license()`, `use_gpl3_license()` or friends to
+    pick a license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
