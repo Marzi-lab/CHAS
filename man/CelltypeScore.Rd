@@ -2,22 +2,22 @@
 % Please edit documentation in R/CHAS.R
 \name{CelltypeScore}
 \alias{CelltypeScore}
-\title{Calculate a celltype-specific histone acetylation score}
+\title{Generate celltype-specific histone acetylation scores}
 \usage{
-CelltypeScore(cpm, CelltypeSpecificPeaks)
+CelltypeScore(cpm, celltypeSpecificPeaks)
 }
 \arguments{
 \item{cpm}{A counts per million matrix with rows labeling peaks and columns labeling
 samples.}
 
-\item{MinOverlapPeaks}{The output data frame from the function MinOverlap() containing
-bulk H3K27ac peaks which are celltype-specific and overlap > x\% of a celltype h3K27ac peak.}
+\item{celltypeSpecificPeaks}{The output list of dataframes from the function CelltypeSpecificPeaks() containing
+the annotated bulk peaks and the cell type-specific bulk peaks.}
 }
 \value{
 Celltype-specific histone acetylation scores for each sample.
 }
 \description{
 This function takes as input a counts per million (cpm) matrix and the output of function
-MinOverlap(), and will calculate a celltype-specific histone acetylation score for
+CelltypeSpecificPeaks(), and will calculate celltype-specific histone acetylation scores for
 each sample in the cpm matrix.
 }
