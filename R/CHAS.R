@@ -19,8 +19,8 @@
 #' @export
 CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
   peaksList <- lapply(names(celltypePeaks), function(x){
-    bulkGR <- GenomicRanges::GRanges(seqnames=bulkPeaks[,1], IRanges(start=bulkPeaks[,2], end=bulkPeaks[,3]))
-    celltypeGR <- GenomicRanges::GRanges(seqnames=celltypePeaks[[x]][,1], IRanges(start=celltypePeaks[[x]][,2], end=celltypePeaks[[x]][,3]))
+    bulkGR <- GenomicRanges::GRanges(seqnames=bulkPeaks[,1], IRanges::IRanges(start=bulkPeaks[,2], end=bulkPeaks[,3]))
+    celltypeGR <- GenomicRanges::GRanges(seqnames=celltypePeaks[[x]][,1], IRanges::IRanges(start=celltypePeaks[[x]][,2], end=celltypePeaks[[x]][,3]))
     olGR <- GenomicRanges::findOverlaps(bulkGR, celltypeGR)
     olPintersect <- pintersect(bulkGR[queryHits(olGR)], celltypeGR[subjectHits(olGR)])
     percOl <- width(olPintersect) / width(celltypeGR[subjectHits(olGR)])
