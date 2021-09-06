@@ -3,7 +3,11 @@
 
 *CHAS* is an R-package for inferring cell type-specific signatures in bulk brain H3K27ac profiles. *CHAS* annotates peaks identified in bulk brain studies of H3K27ac to cell type-specific signals in four major brain cell types, and based on signal intensities generates cell type-specific histone acetylation scores to act as a proxy for cell type proportion.
 
-**For more information and a tutorial please see the [vignette website] for CHAS.**
+Tutorial 
+------
+See the [CHAS vignette
+website](https://neurogenomics.github.io/CHAS/CHAS_vignette.html)
+for up-to-date instructions on usage.
 
 Citation
 ------
@@ -17,7 +21,7 @@ Installing CHAS
 if (!require("devtools")) {
   install.packages("devtools")
 }
-devtools::install_github("KittyMurphy/CHAS")
+devtools::install_github("neurogenomics/CHAS")
 ```
 
 Background
