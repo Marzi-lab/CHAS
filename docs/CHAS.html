@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Kitty Murphy, Sarah Marzi, and Alexi Nott" />
+<meta name="author" content="Kitty Murphy, Alexi Nott, and Sarah Marzi" />
 
 <meta name="date" content="2021-09-06" />
 
@@ -140,35 +140,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <h1 class="title toc-ignore">CHAS</h1>
-<h4 class="author">Kitty Murphy, Sarah Marzi, and Alexi Nott</h4>
+<h4 class="author">Kitty Murphy, Alexi Nott, and Sarah Marzi</h4>
 <h4 class="date">2021-09-06</h4>
 
 
 
-<div id="citation" class="section level1">
-<h1>Citation</h1>
-<p>If you use the cell sorted H3K27ac data associated with this package then please cite the following paper: <a href="https://science.sciencemag.org/content/366/6469/1134.abstract">Nott, et al. Brain cell type-specific enhancer-promoter interactome maps and disease-risk association. Science, 2019.</a></p>
-</div>
-<div id="background" class="section level1">
-<h1>Background</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
 <p>Cell type identity is a major driver of epigenetic variation, making biological interpretation of bulk tissue epigenomes difficult. Here we present <em>CHAS</em> (cell type-specific histone acetylation score), an R package for inferring cell type-specific signatures in bulk brain H3K27ac profiles. <em>CHAS</em> annotates peaks identified in bulk brain studies of H3K27ac to cell type-specific signals in four major brain cell types, and based on signal intensities generates cell type-specific histone acetylation scores to act as a proxy for cell type proportion. <em>CHAS</em> was successfully validated in pseudo-bulk samples of known cell type proportions and applied to three neurodegenerative disorder epigenome-wide association studies conducted on bulk brain tissue. <em>CHAS</em> adds to the existing frameworks for cell type deconvolution in bulk brain tissue and we would expect to be able to extend the use of <em>CHAS</em> to other bulk tissue H3K27ac profiles.</p>
 </div>
-<div id="chas-workflow" class="section level1">
-<h1><em>CHAS</em> workflow</h1>
+<div id="chas-workflow" class="section level2">
+<h2><em>CHAS</em> workflow</h2>
 <p><strong>1. Identification of cell type-specific peaks in bulk tissue H3K27ac profiles.</strong></p>
 <p><em>CHAS</em> annotates peaks identified in bulk tissue studies of H3K27ac to their cell type-specific signals by overlapping the bulk peaks with cell sorted H3K27ac peaks and identifying which of the bulk peaks are specific to a given cell type. For a bulk peak to be defined as cell type-specific two criteria must be met: (i) the bulk peak is annotated only to a single cell type; (ii) the bulk peak overlaps a predefined percentage of that cell type’s peak.</p>
 <p><strong>2. Cell type-specific histone acetylation score generation.</strong></p>
 <p>Using a counts per million matrix and the cell type-specific bulk H3K27ac peaks identified in step 1 of the workflow, <em>CHAS</em> generates scores by averaging the normalised signal intensity of a sample across all peaks specific to a given cell type, thereby deriving a proxy of the proportion of that cell type in the given bulk sample. As a constraint from peak-normalisation, the maximum signal intensity for any given peak and sample is 1 and the resulting score will lie between 0 and 1 for a given sample and cell type.</p>
 </div>
-<div id="installing-chas" class="section level1">
-<h1>Installing <em>CHAS</em></h1>
+<div id="installing-chas" class="section level2">
+<h2>Installing <em>CHAS</em></h2>
 <pre><code>if (!require(&quot;devtools&quot;)) {
   install.packages(&quot;devtools&quot;)
 }
-devtools::install_github(&quot;neurogenomics/CHAS&quot;)</code></pre>
+devtools::install_github(&quot;neurogenomics/CHAS&quot;)
+
+</code></pre>
 </div>
-<div id="tutorial" class="section level1">
-<h1>Tutorial</h1>
+<div id="citation" class="section level2">
+<h2>Citation</h2>
+<p>If you use the cell sorted H3K27ac data associated with this package then please cite the following paper: <a href="https://science.sciencemag.org/content/366/6469/1134.abstract">Nott, et al. Brain cell type-specific enhancer-promoter interactome maps and disease-risk association. Science, 2019.</a> If you use the entorhiinal cortex peaks and/or counts available within this package then please cite the following paper: <a href="https://www.nature.com/articles/s41593-018-0253-7#Sec11">Marzi, et al. A histone acetylome-wide association study of Alzheimer’s disease identifies disease-associated H3K27ac differences in the entorhinal cortex. Nature Neuroscience, 2018.</a></p>
+</div>
+<div id="tutorial" class="section level2">
+<h2>Tutorial</h2>
 <p><em>CHAS</em> requires 3 inputs to run:</p>
 <ol style="list-style-type: decimal">
 <li><strong>Bulk tissue H3K27ac peaks in BED format (Column 1 - chrom, Column 2 - chromStart, Column 3 - ChromEnd, Column 4 - name)</strong>. The columns can be named as you like but <strong>the order must be as stated here.</strong></li>
