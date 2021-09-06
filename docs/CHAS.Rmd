@@ -16,10 +16,6 @@ library(dplyr)
 library(ggpubr)
 ```
 
-```{r, echo=FALSE}
-load("/Volumes/cm1118/home/CHAS/CHAS_rmd.RData")
-```
-
 ## Introduction
 
 Cell type identity is a major driver of epigenetic variation, making biological interpretation of bulk tissue epigenomes difficult. Here we present *CHAS* (cell type-specific histone acetylation score), an R package for inferring cell type-specific signatures in bulk brain H3K27ac profiles. *CHAS* annotates peaks identified in bulk brain studies of H3K27ac to cell type-specific signals in four major brain cell types, and based on signal intensities generates cell type-specific histone acetylation scores to act as a proxy for cell type proportion. *CHAS* was successfully validated in pseudo-bulk samples of known cell type proportions and applied to three neurodegenerative disorder epigenome-wide association studies conducted on bulk brain tissue. *CHAS* adds to the existing frameworks for cell type deconvolution in bulk brain tissue and we would expect to be able to extend the use of *CHAS* to other bulk tissue H3K27ac profiles. 
@@ -43,6 +39,9 @@ if (!require("devtools")) {
 devtools::install_github("neurogenomics/CHAS")
 
 
+```
+```
+library(CHAS)
 ```
 
 ## Citation
@@ -70,12 +69,17 @@ In this tutorial we will use entorhinal cortex H3K27ac peaks from [Marzi et al. 
 ### 1. Load the example data
 
 Bulk brain peaks: 
-```
+```{r}
 data(EntorhinalCortex_AD_H3K27ac_peaks)
 ```
 
 Counts per million matrix: 
+```{r}
+data(EntorhinalCortex_AD_H3K27ac_counts)
 ```
+
+Phenotype information: 
+```{r}
 data(EntorhinalCortex_AD_H3K27ac_counts)
 ```
 
@@ -84,7 +88,7 @@ data(EntorhinalCortex_AD_H3K27ac_counts)
 <p>The cell sorted H3K27ac peaks are available in two human genome reference builds: hg19 and hg38.<br> 
 To load the **hg19** peaks:</p>
 
-```
+```{r}
 data(astro_H3K27ac_hg19)
 data(mgl_H3K27ac_hg19)
 data(neu_H3K27ac_hg19)
@@ -93,7 +97,7 @@ data(olig_H3K27ac_hg19)
 
 To load the **hg38** peaks:
 
-```
+```{r}
 data(astro_H3K27ac_hg38)
 data(mgl_H3K27ac_hg38)
 data(neu_H3K27ac_hg38)
