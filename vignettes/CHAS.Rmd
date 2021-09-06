@@ -45,7 +45,7 @@ Using a counts per million matrix and the cell type-specific bulk H3K27ac peaks 
 if (!require("devtools")) {
   install.packages("devtools")
 }
-devtools::install_github("KittyMurphy/CHAS")
+devtools::install_github("neurogenomics/CHAS")
 ```
 
 # Tutorial 
