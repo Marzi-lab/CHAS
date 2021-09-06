@@ -29,9 +29,9 @@ then please cite the following paper:
 Installing CHAS
 ------
 ```
-if (!require("devtools")) {
-  install.packages("devtools")
+if (!require("remotes")) {
+  install.packages("remotes")
 }
-devtools::install_github("neurogenomics/CHAS")
+remotes::install_github("neurogenomics/CHAS")
 ```
 
