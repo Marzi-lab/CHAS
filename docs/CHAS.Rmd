@@ -1,6 +1,6 @@
 ---
 title: "CHAS"
-author: "Kitty Murphy, Sarah Marzi, and Alexi Nott"
+author: "Kitty Murphy, Alexi Nott, and Sarah Marzi"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 ---
