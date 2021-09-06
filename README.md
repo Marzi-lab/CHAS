@@ -12,7 +12,7 @@ for up-to-date instructions on usage.
 *CHAS* workflow 
 ------
 ![alt text](https://github.com/KittyMurphy/CHAS/blob/master/CHAS_workflow.png)
-### 1. Identification of cell type-specific peaks in bulk tissue H3K27ac profiles.
+### 1. Identification of cell type-specific peaks in bulk brain H3K27ac profiles.
 
 *CHAS* annotates peaks identified in bulk tissue studies of H3K27ac to their cell type-specific signals by overlapping the bulk peaks with cell sorted H3K27ac peaks and identifying which of the bulk peaks are specific to a given cell type. For a bulk peak to be defined as cell type-specific two criteria must be met: (i) the bulk peak is annotated only to a single cell type; (ii) the bulk peak overlaps a predefined percentage of that cell type’s peak.
 
