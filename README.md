@@ -20,11 +20,14 @@ for up-to-date instructions on usage.
 
 Using a counts per million matrix and the cell type-specific bulk H3K27ac peaks identified in step 1 of the workflow, *CHAS* generates scores by averaging the normalised signal intensity of a sample across all peaks specific to a given cell type, thereby deriving a proxy of the proportion of that cell type in the given bulk sample. As a constraint from peak-normalisation, the maximum signal intensity for any given peak and sample is 1 and the resulting score will lie between 0 and 1 for a given sample and cell type.
 
-Citation
-------
-If you use the cell sorted H3K27ac data associated with this package 
+## Citation
+
+* If you use the cell sorted H3K27ac data associated with this package 
 then please cite the following paper: 
 [Nott, et al. Brain cell type-specific enhancer-promoter interactome maps and disease-risk association. Science, 2019.](https://science.sciencemag.org/content/366/6469/1134.abstract)
+* If you use the entorhinal cortex peaks and/or counts available within this package
+then please cite the following paper: 
+[Marzi, et al. A histone acetylome-wide association study of Alzheimer’s disease identifies disease-associated H3K27ac differences in the entorhinal cortex. Nature Neuroscience, 2018.](https://www.nature.com/articles/s41593-018-0253-7#Sec11)
 
 Installing CHAS
 ------
