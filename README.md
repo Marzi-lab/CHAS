@@ -1,7 +1,6 @@
 ## Cell type-specific Histone Acetylation Score (CHAS)
-### Cell type deconvolution of bulk tissue H3K27ac profiles
 
-Introduction
+Cell type deconvolution of bulk tissue H3K27ac profiles
 ------
 Cell type identity is a major driver of epigenetic variation, making biological interpretation of bulk tissue epigenomes difficult. Here we present *CHAS* (cell type-specific histone acetylation score), an R package for inferring cell type-specific signatures in bulk brain H3K27ac profiles. *CHAS* annotates peaks identified in bulk brain studies of H3K27ac to cell type-specific signals in four major brain cell types, and based on signal intensities generates cell type-specific histone acetylation scores to act as a proxy for cell type proportion. *CHAS* was successfully validated in pseudo-bulk samples of known cell type proportions and applied to three neurodegenerative disorder epigenome-wide association studies conducted on bulk brain tissue. 
 
