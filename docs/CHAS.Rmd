@@ -40,7 +40,8 @@ devtools::install_github("neurogenomics/CHAS")
 
 
 ```
-```
+
+```{r}
 library(CHAS)
 ```
 
@@ -104,25 +105,28 @@ data(neu_H3K27ac_hg38)
 data(olig_H3K27ac_hg38)
 ```
 
+```{r}
+data(AD_pheno)
+```
 
 ### 3. Generate list containing data frames of all cell sorted H3K27ac peaks
 
 This example uses the cell sorted peaks in **hg38** build. 
 
-```
+```{r}
 celltypePeaks <- list(Astrocyte = astro_H3K27ac_hg38, Microglia = mgl_H3K27ac_hg38, Neuron = neu_H3K27ac_hg38, Oligodendrocyte = olig_H3K27ac_hg38)
 ```
 
 ### 4. Annotate bulk H3K27ac peaks and identify which are cell type-specific
 
-```
+```{r}
 celltype_specific_peaks <- CelltypeSpecificPeaks(EntorhinalCortex_AD_H3K27ac_peaks, celltypePeaks, 0.5) 
 ```
 
 *CelltypeSpecificPeaks()* takes as input the bulk peaks, the list of cell sorted peaks, and a value from 0-1 specifying the percentage overlap required for a bulk peak to be considered cell type-specific, and outputs a list of two data frames. The first data frame contains all bulk peaks that are specific to a cell type and the second data frame contains all the bulk peaks annotated either to a cell type, 'multiple' cell types, or 'other'. 
 
 ### 5. Generate cell type-specific histone acetylation scores
-```
+```{r}
 celltype_scores <- CelltypeScore(EntorhinalCortex_AD_H3K27ac_counts, celltype_specific_peaks) 
 ```
 
