@@ -6,7 +6,7 @@
 Tutorial 
 ------
 See the [CHAS vignette
-website](https://neurogenomics.github.io/CHAS/docs/CHAS.html)
+website](https://neurogenomics.github.io/CHAS/CHAS.html)
 for up-to-date instructions on usage.
 
 Citation
