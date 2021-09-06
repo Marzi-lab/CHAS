@@ -19,17 +19,12 @@ library(ggpubr)
 ```{r, echo=FALSE}
 load("/Volumes/cm1118/home/CHAS/CHAS_rmd.RData")
 ```
-# Citation
 
-If you use the cell sorted H3K27ac data associated with this package 
-then please cite the following paper: 
-[Nott, et al. Brain cell type-specific enhancer-promoter interactome maps and disease-risk association. Science, 2019.](https://science.sciencemag.org/content/366/6469/1134.abstract)
-
-# Background
+## Introduction
 
 Cell type identity is a major driver of epigenetic variation, making biological interpretation of bulk tissue epigenomes difficult. Here we present *CHAS* (cell type-specific histone acetylation score), an R package for inferring cell type-specific signatures in bulk brain H3K27ac profiles. *CHAS* annotates peaks identified in bulk brain studies of H3K27ac to cell type-specific signals in four major brain cell types, and based on signal intensities generates cell type-specific histone acetylation scores to act as a proxy for cell type proportion. *CHAS* was successfully validated in pseudo-bulk samples of known cell type proportions and applied to three neurodegenerative disorder epigenome-wide association studies conducted on bulk brain tissue. *CHAS* adds to the existing frameworks for cell type deconvolution in bulk brain tissue and we would expect to be able to extend the use of *CHAS* to other bulk tissue H3K27ac profiles. 
 
-# *CHAS* workflow 
+## *CHAS* workflow 
 
 **1. Identification of cell type-specific peaks in bulk tissue H3K27ac profiles.**
 
@@ -39,16 +34,28 @@ Cell type identity is a major driver of epigenetic variation, making biological 
 
 Using a counts per million matrix and the cell type-specific bulk H3K27ac peaks identified in step 1 of the workflow, *CHAS* generates scores by averaging the normalised signal intensity of a sample across all peaks specific to a given cell type, thereby deriving a proxy of the proportion of that cell type in the given bulk sample. As a constraint from peak-normalisation, the maximum signal intensity for any given peak and sample is 1 and the resulting score will lie between 0 and 1 for a given sample and cell type.
 
-# Installing *CHAS* 
+## Installing *CHAS* 
 
 ```
 if (!require("devtools")) {
   install.packages("devtools")
 }
 devtools::install_github("neurogenomics/CHAS")
+
+
 ```
 
-# Tutorial 
+## Citation
+
+If you use the cell sorted H3K27ac data associated with this package 
+then please cite the following paper: 
+[Nott, et al. Brain cell type-specific enhancer-promoter interactome maps and disease-risk association. Science, 2019.](https://science.sciencemag.org/content/366/6469/1134.abstract)
+If you use the entorhiinal cortex peaks and/or counts available within this package
+then please cite the following paper: 
+[Marzi, et al. A histone acetylome-wide association study of Alzheimer’s disease identifies disease-associated H3K27ac differences in the entorhinal cortex. Nature Neuroscience, 2018.](https://www.nature.com/articles/s41593-018-0253-7#Sec11)
+
+
+## Tutorial 
 
 *CHAS* requires 3 inputs to run:
 
