@@ -37,12 +37,12 @@ if (!require("remotes")) {
   install.packages("remotes")
 }
 remotes::install_github("neurogenomics/CHAS")
-
-
 ```
+
 ```{r}
 library(CHAS)
 ```
+
 ## Citation
 
 * If you use the cell sorted H3K27ac data associated with this package 
@@ -103,8 +103,9 @@ data(neu_H3K27ac_hg38)
 data(olig_H3K27ac_hg38)
 ```
 
+Phenotype information: 
 ```{r}
-data(AD_pheno)
+data(EntorhinalCortex_AD_H3K27ac_counts)
 ```
 
 ### 3. Generate list containing data frames of all cell sorted H3K27ac peaks
@@ -117,7 +118,7 @@ celltypePeaks <- list(Astrocyte = astro_H3K27ac_hg38, Microglia = mgl_H3K27ac_hg
 
 ### 4. Annotate bulk H3K27ac peaks and identify which are cell type-specific
 
-```{r}
+```{r, echo=FALSE}
 celltype_specific_peaks <- CelltypeSpecificPeaks(EntorhinalCortex_AD_H3K27ac_peaks, celltypePeaks, 0.5) 
 ```
 
