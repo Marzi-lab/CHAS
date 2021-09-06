@@ -39,7 +39,7 @@ CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
   ctPeaksList <- lapply(peaksList, `[[`, 1)
   ctPeaks <- do.call("rbind", ctPeaksList)
   annotBulkPeaksList <- lapply(peaksList, `[[`, 2)
-  annotBulkPeaks <- Reduce(full_join, annotBulkPeaksList)
+  annotBulkPeaks <- Reduce(dplyr::full_join, annotBulkPeaksList)
   noCelltypes <- length(celltypePeaks)
   annotBulkPeaks$Celltype <- apply(annotBulkPeaks, 1, function(x) paste(names(annotBulkPeaks)[x ==1], collapse=","))
   annotBulkPeaks$Celltype[annotBulkPeaks$Celltype==""]<-"Other"
@@ -88,6 +88,7 @@ CelltypeScore <- function(cpm, celltypeSpecificPeaks) {
 #' @param annotatedPeaks The output list of data frames from the function CelltypeSpecificPeaks()
 #' containing the annotated bulk peaks and the cell type-specific bulk peaks.
 #' @return A stacked bar plot showing the proportion of each cell type in the bulk peak set.
+#' @import ggplot2
 #' @export
 plot_celltype_props <- function(annotatedPeaks, exampleData=TRUE){
   allPeaks = annotatedPeaks[[2]]
@@ -118,6 +119,7 @@ plot_celltype_props <- function(annotatedPeaks, exampleData=TRUE){
 #' @param celltypeScores The output data frame from the function CelltypeScore()
 #' @param pheno A data frame containing a column named Sample and a column named Group.
 #' @return A violin plot showing the cell type scores between two different groups.
+#' @import ggplot2
 #' @export
 plot_celltype_scores <- function(celltypeScores, pheno){
 
