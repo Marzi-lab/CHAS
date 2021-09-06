@@ -33,18 +33,16 @@ Using a counts per million matrix and the cell type-specific bulk H3K27ac peaks 
 ## Installing *CHAS* 
 
 ```
-if (!require("devtools")) {
-  install.packages("devtools")
+if (!require("remotes")) {
+  install.packages("remotes")
 }
-devtools::install_github("neurogenomics/CHAS")
+remotes::install_github("neurogenomics/CHAS")
 
 
 ```
-
 ```{r}
 library(CHAS)
 ```
-
 ## Citation
 
 * If you use the cell sorted H3K27ac data associated with this package 
