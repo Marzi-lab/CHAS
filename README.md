@@ -45,4 +45,7 @@ remotes::install_github("neurogenomics/CHAS")
 You can then load the package and data package:
 ```
 library(CHAS)
+```
+### License
+This project is licensed under the terms of the GNU General Public License v3.0.
 
