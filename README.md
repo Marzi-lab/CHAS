@@ -3,7 +3,7 @@
 ## Introduction
 Cell type identity is a major driver of epigenetic variation, making biological interpretation of bulk tissue epigenomes difficult. Here we present CHAS (cell type-specific histone acetylation score), an R package for inferring cell type-specific signatures in bulk brain H3K27ac profiles. CHAS annotates peaks identified in bulk brain studies of H3K27ac to cell type-specific signals in four major brain cell types, and based on signal intensities generates cell type-specific histone acetylation scores to act as a proxy for cell type proportion. CHAS was successfully validated in pseudo-bulk samples of known cell type proportions and applied to three neurodegenerative disorder epigenome-wide association studies conducted on bulk brain tissue. 
 
-If you use CHAS, please cite out preprint: [Murphy, et al. CHAS, a deconvolution tool, infers cell type-specific signatures in bulk brain histone acetylation studies of brain disorders. bioRxiv, 2021.](https://www.biorxiv.org/content/10.1101/2021.09.06.459142v1)
+If you use CHAS, please cite our preprint: [Murphy, Nott & Marzi. CHAS, a deconvolution tool, infers cell type-specific signatures in bulk brain histone acetylation studies of brain disorders. bioRxiv, 2021.](https://www.biorxiv.org/content/10.1101/2021.09.06.459142v1)
 
 Tutorial 
 ------
@@ -24,7 +24,7 @@ Using a counts per million matrix and the cell type-specific bulk H3K27ac peaks 
 
 ## Citation
 
-* If you use CHAS, please cite out preprint: [Murphy, et al. CHAS, a deconvolution tool, infers cell type-specific signatures in bulk brain histone acetylation studies of brain disorders. bioRxiv, 2021.](https://www.biorxiv.org/content/10.1101/2021.09.06.459142v1)
+* If you use CHAS, please cite our preprint: [Murphy, Nott & Marzi. CHAS, a deconvolution tool, infers cell type-specific signatures in bulk brain histone acetylation studies of brain disorders. bioRxiv, 2021.](https://www.biorxiv.org/content/10.1101/2021.09.06.459142v1)
 * If you use the cell sorted H3K27ac data associated with this package 
 then please cite the following paper: 
 [Nott, et al. Brain cell type-specific enhancer-promoter interactome maps and disease-risk association. Science, 2019.](https://science.sciencemag.org/content/366/6469/1134.abstract)
