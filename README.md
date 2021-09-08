@@ -40,4 +40,7 @@ if (!require("remotes")) {
 }
 remotes::install_github("neurogenomics/CHAS")
 ```
+You can then load the package and data package:
+```
+library(CHAS)
 
