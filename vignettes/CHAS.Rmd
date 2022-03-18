@@ -103,11 +103,6 @@ data(neu_H3K27ac_hg38)
 data(olig_H3K27ac_hg38)
 ```
 
-Phenotype information: 
-```{r}
-data(EntorhinalCortex_AD_H3K27ac_counts)
-```
-
 ### 3. Generate list containing data frames of all cell sorted H3K27ac peaks
 
 This example uses the cell sorted peaks in **hg38** build. 
