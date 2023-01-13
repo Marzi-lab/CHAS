@@ -22,7 +22,7 @@ CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
     bulkGR <- GenomicRanges::GRanges(seqnames=bulkPeaks[,1], IRanges::IRanges(start=bulkPeaks[,2], end=bulkPeaks[,3]))
     celltypeGR <- GenomicRanges::GRanges(seqnames=celltypePeaks[[x]][,1], IRanges::IRanges(start=celltypePeaks[[x]][,2], end=celltypePeaks[[x]][,3]))
     olGR <- GenomicRanges::findOverlaps(bulkGR, celltypeGR)
-    olPintersect <- GenomicRanges::pintersect(bulkGR[queryHits(olGR)], celltypeGR[subjectHits(olGR)])
+    olPintersect <- IRanges::pintersect(bulkGR[queryHits(olGR)], celltypeGR[subjectHits(olGR)])
     percOl <- width(olPintersect) / width(celltypeGR[subjectHits(olGR)])
     olMtrx <- as.matrix(olGR)
     olDF <- cbind(bulkPeaks[olMtrx[,1],], celltypePeaks[[x]][olMtrx[,2],])
