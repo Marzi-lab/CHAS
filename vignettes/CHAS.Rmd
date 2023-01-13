@@ -79,7 +79,7 @@ data(EntorhinalCortex_AD_H3K27ac_counts)
 
 Phenotype information: 
 ```{r}
-data(EntorhinalCortex_AD_H3K27ac_counts)
+data(AD_pheno)
 ```
 
 ### 2. Load the input data
