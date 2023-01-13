@@ -9,7 +9,7 @@
 #' the annotated bulk peaks and the cell type-specific bulk peaks.
 #' @return Celltype-specific histone acetylation scores for each sample.
 #' @export
-CelltypeScore <- function(cpm, celltypeSpecificPeaks) {
+CelltypeScore <- function(cpm, celltypeSpecificPeaks, method) {
   celltypeSpecific = celltypeSpecificPeaks[[1]]
   celltypeSpecific_dedup = celltypeSpecific[!duplicated(celltypeSpecific[,1]),]
   max_reads <- apply(cpm, 1, max)
@@ -18,7 +18,7 @@ CelltypeScore <- function(cpm, celltypeSpecificPeaks) {
   scores <- lapply(names(celltypeSpecific_split), function(x){
     celltypeSpecificPeakNames <- as.character(celltypeSpecific_split[[x]][[1]])
     cpmFiltered <- cpm_divByMax[row.names(cpm_divByMax) %in% celltypeSpecificPeakNames,]
-    scores <- as.data.frame(apply(cpmFiltered, 2, mean))
+    scores <- as.data.frame(apply(cpmFiltered, 2, method))
     scores$Celltype <- x
     scores$Sample <- row.names(scores)
     names(scores) <- c("Score", "Celltype", "Sample")

@@ -4,9 +4,9 @@
 \alias{CelltypeScore}
 \title{Generate celltype-specific histone acetylation scores}
 \usage{
-CelltypeScore(cpm, celltypeSpecificPeaks)
+CelltypeScore(cpm, celltypeSpecificPeaks, method)
 
-CelltypeScore(cpm, celltypeSpecificPeaks)
+CelltypeScore(cpm, celltypeSpecificPeaks, method)
 }
 \arguments{
 \item{cpm}{A counts per million matrix with rows labeling peaks and columns labeling
