@@ -79,7 +79,7 @@ data(EntorhinalCortex_AD_H3K27ac_counts)
 
 Phenotype information: 
 ```{r}
-data(EntorhinalCortex_AD_H3K27ac_counts)
+data(AD_pheno)
 ```
 
 ### 2. Load the input data
@@ -101,11 +101,6 @@ data(astro_H3K27ac_hg38)
 data(mgl_H3K27ac_hg38)
 data(neu_H3K27ac_hg38)
 data(olig_H3K27ac_hg38)
-```
-
-Phenotype information: 
-```{r}
-data(EntorhinalCortex_AD_H3K27ac_counts)
 ```
 
 ### 3. Generate list containing data frames of all cell sorted H3K27ac peaks
