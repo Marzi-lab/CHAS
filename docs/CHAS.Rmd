@@ -121,10 +121,10 @@ celltype_specific_peaks <- CelltypeSpecificPeaks(EntorhinalCortex_AD_H3K27ac_pea
 
 ### 5. Generate cell type-specific histone acetylation scores
 ```{r}
-celltype_scores <- CelltypeScore(EntorhinalCortex_AD_H3K27ac_counts, celltype_specific_peaks) 
+celltype_scores <- CelltypeScore(EntorhinalCortex_AD_H3K27ac_counts, celltype_specific_peaks, method="mean") 
 ```
 
-*CelltypeScore()* uses a counts per million matrix and the output of the function *CelltypeSpecificPeaks()* to generate cell type-specific H3K27ac scores for each sample in the counts matrix. 
+*CelltypeScore()* uses a counts per million matrix and the output of the function *CelltypeSpecificPeaks()* to generate cell type-specific H3K27ac scores for each sample in the counts matrix. For method, specify either mean or median to calculate the mean/median score for each sample. 
 
 ### 6. Plot the cell type proportions in the bulk H3K27ac peaks. 
 
