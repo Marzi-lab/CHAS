@@ -1,15 +1,20 @@
-#' MF addon Function 1: Find Consensus Peaks
-#' 
-#' This function takes four inputs: 
+#' MF add-on Function 1: Find Consensus Peaks
+#'
+#' @description
+#' This function identifies the consensus peaks and their counts in each bulk and reference
+#' samples by switching IDs
+#'
+#' @details
+#' This function takes four inputs:
 #'   bulk: peak location, raw counts
 #'   reference: peak location, raw counts
-#' 
+#'
 #' This function has four steps:
 #'   (1) calculate length-normalised cpm from raw counts
 #'   (2) find consensus peaks in bulk and reference
 #'   (3) assign new identifiers to consensus peaks
 #'   (4) filter the length-normalised cpm matrices to contain only the consensus peaks
-#'   
+#'
 #' @param bulkPeaks A data frame of bulk H3K27ac peaks in BED format
 #'   the first column contains the chromosome number, such as 'chr1'
 #'   the second column contains the start position of the peak
@@ -25,7 +30,7 @@
 #'   the fourth column contains the peak identifier
 #' @param refCounts A counts matrix for reference data
 #'   rows represent peaks, using the same identifier as refPeaks
-#'   columns represent cell-type-specific samples, can can contain 
+#'   columns represent cell-type-specific samples, can can contain
 #'     either: 1 sample for each cell type
 #'     or: 3 samples for each cell type
 #' @param bedtools_path The path to where bedtools is installed
@@ -36,7 +41,7 @@
 #' @export
 
 ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path){
-  
+
   # Step 1. calculate length-normalised cpm
   # for bulk counts
   library(edgeR)
@@ -53,7 +58,7 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path
   refMer$ID <- row.names(refMer)
   refMer[,5:ncol(refMer)] <- refMer[,5:ncol(refMer)]/(refMer$End-refMer$Start+1)
   refMer[,5:ncol(refMer)] <- cpm(refMer[,5:ncol(refMer)])
-  
+
   # Step 2. find consensus peaks in bulk and reference
   # merge bulk & reference peaks
   library(stringi)
@@ -67,7 +72,7 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path
   # bedtools merge
   system(paste("cd",getwd()))
   system(paste(bedtools_path,"merge -i input.bed -c 4 -o distinct -d 20 > output.bed"))
-  
+
   # Step 3. assign new identifiers to consensus peaks
   # consensus peaks
   mer_out <- read.table("output.bed")
@@ -80,7 +85,7 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path
   mer_out$ID_consensus <- paste0('co', mer_out$ID_consensus) # co represents consensus peaks
   mer_out$ID_ct <- gsub(",.*","",mer_out$Annot) # ref peak ID
   mer_out$ID_bulk <- paste0("s", gsub("([a-z0-9]*,)(s*)", "", mer_out$Annot)) # bulk peak ID
-  
+
   # Step 4. filter bulk & reference counts
   # bulk normalised counts for consensus peaks
   bulkFil <- merge(mer_out[,c("ID_consensus","ID_bulk")], bulkMer, by.x='ID_bulk', by.y='ID')
@@ -90,6 +95,6 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path
   refFil <- merge(mer_out[,c("ID_consensus","ID_ct")], refMer, by.x='ID_ct', by.y='ID')
   row.names(refFil) <- refFil$ID_consensus
   refFil <- refFil[,6:ncol(refFil)]
-  
+
   return(list(bulk = bulkFil, reference = refFil))
 }
