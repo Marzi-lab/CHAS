@@ -21,7 +21,7 @@ CelltypeScore <- function(cpm, celltypeSpecificPeaks, method) {
     cpmFiltered <- cpm_divByMax[row.names(cpm_divByMax) %in% celltypeSpecificPeakNames,]
     scores <- as.data.frame(apply(cpmFiltered, 2, method))
     scores$Celltype <- x
-    scores$Sample <- row.names(scores)
+    scores$Sample <- colnames(cpmFiltered)
     names(scores) <- c("Score", "Celltype", "Sample")
     return(scores)
   }
