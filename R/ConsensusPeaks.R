@@ -38,19 +38,20 @@
 #' @return A list containing the following:
 #'   [1] data frame: bulk normalised counts
 #'   [2] data frame: reference normalised counts
+#' @import stringi
+#' @import edgeR
 #' @export
 
 ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path){
 
   # Step 1. calculate length-normalised cpm
   # for bulk counts
-  library(edgeR)
   names(bulkPeaks) <- c("Chr","Start","End","ID")
   bulkMer <- merge(bulkPeaks, bulkCounts, by.x="ID", by.y="row.names")
   row.names(bulkMer) <- paste0('sp',row.names(bulkMer)) # sp represents bulk samples
   bulkMer$ID <- row.names(bulkMer)
   bulkMer[,5:ncol(bulkMer)] <- bulkMer[,5:ncol(bulkMer)]/(bulkMer$End-bulkMer$Start+1)
-  bulkMer[,5:ncol(bulkMer)] <- cpm(bulkMer[,5:ncol(bulkMer)])
+  bulkMer[,5:ncol(bulkMer)] <- edgeR::cpm(bulkMer[,5:ncol(bulkMer)])
   # for reference counts
   names(refPeaks) <- c("Chr","Start","End","ID")
   refMer <- merge(refPeaks, refCounts, by.x="ID", by.y="row.names")
@@ -61,7 +62,6 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path
 
   # Step 2. find consensus peaks in bulk and reference
   # merge bulk & reference peaks
-  library(stringi)
   mer <- rbind(bulkMer[,1:4], refMer[,1:4])
   mer$No <- sub('chr', '', mer$Chr)
   mer$No <- stri_replace_all_regex(mer$No, pattern=c('X', 'Y'), replacement=c('23', '24'), vectorize=FALSE)

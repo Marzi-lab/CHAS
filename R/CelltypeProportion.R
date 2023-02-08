@@ -27,6 +27,7 @@
 #' @return  A list containing the following:
 #'   [1] a list: numbers of signature peaks for each cell type
 #'   [2] data frame: EPIC-predicted cell-type proportions
+#' @import EPIC
 #' @export
 
 CelltypeProportion <- function(consensus,refSamples){
@@ -60,8 +61,7 @@ CelltypeProportion <- function(consensus,refSamples){
   EPIC_ref <- list('refProfiles'=ref_median,
                    'sigGenes'=row.names(signature),
                    'refProfiles.var'=ref_var)
-  library(EPIC)
-  EPIC_scores <- EPIC(bulk = consensus[["bulk"]], ref = EPIC_ref)
+  EPIC_scores <- EPIC::EPIC(bulk = consensus[["bulk"]], ref = EPIC_ref)
 
   return(list(signature = count,
               proportions = as.data.frame(EPIC_scores[["cellFractions"]])))

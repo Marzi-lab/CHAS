@@ -16,6 +16,8 @@
 #' to be considered cell type specific.
 #' @return A data frame of annotated bulk peaks and a data frame containing only the cell type
 #' specific bulk peaks.
+#' @import GenomicRanges
+#' @import IRanges
 #' @export
 CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
   peaksList <- lapply(names(celltypePeaks), function(x){

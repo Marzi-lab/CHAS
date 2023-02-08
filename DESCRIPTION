@@ -17,7 +17,9 @@ Imports:
     ggpubr,
     wesanderson,
     IRanges,
-    edgeR
+    edgeR,
+    EPIC,
+    stringi
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
