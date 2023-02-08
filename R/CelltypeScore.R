@@ -9,8 +9,7 @@
 #' @return Cell-type-specific histone acetylation scores for each sample.
 #' @export
 CelltypeScore <- function(counts, celltypeSpecificPeaks, method) {
-  library(edgeR)
-  cpm <- cpm(counts)
+  cpm <- edgeR::cpm(counts)
   celltypeSpecific = celltypeSpecificPeaks[[1]]
   celltypeSpecific_dedup = celltypeSpecific[!duplicated(celltypeSpecific[,1]),]
   max_reads <- apply(cpm, 1, max)

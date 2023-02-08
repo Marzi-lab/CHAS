@@ -16,7 +16,8 @@ Imports:
     ggplot2,
     ggpubr,
     wesanderson,
-    IRanges
+    IRanges,
+    edgeR
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true

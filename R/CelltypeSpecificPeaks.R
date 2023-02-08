@@ -18,7 +18,6 @@
 #' specific bulk peaks.
 #' @export
 CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
-  library(GenomicRanges)
   peaksList <- lapply(names(celltypePeaks), function(x){
     bulkGR <- GenomicRanges::GRanges(seqnames=bulkPeaks[,1], IRanges::IRanges(start=bulkPeaks[,2], end=bulkPeaks[,3]))
     celltypeGR <- GenomicRanges::GRanges(seqnames=celltypePeaks[[x]][,1], IRanges::IRanges(start=celltypePeaks[[x]][,2], end=celltypePeaks[[x]][,3]))

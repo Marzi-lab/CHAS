@@ -8,9 +8,6 @@
 #' @import ggplot2
 #' @export
 plot_celltype_scores <- function(celltypeScores, pheno){
-  library(wesanderson)
-  library(ggplot2)
-  library(ggpubr)
   annotScores <- merge(celltypeScores, pheno, by="Sample")
   maxScore = max(annotScores$Score)
   plot <- ggplot(annotScores, aes(Celltype, Score, fill=Group)) +
