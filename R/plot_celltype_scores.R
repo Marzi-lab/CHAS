@@ -1,4 +1,4 @@
-#' Plot cell type scores between two groups
+#' Plot cell type scores between groups
 #'
 #' This function takes as input the cell type scores generated using the function CelltypeScore()
 #' and plots a violin plot of the cell type scores between two different groups.
@@ -6,7 +6,10 @@
 #' @param pheno A data frame containing a column named Sample and a column named Group.
 #' @return A violin plot showing the cell type scores between two different groups.
 #' @import ggplot2
+#' @import ggpubr
+#' @import wesanderson
 #' @export
+
 plot_celltype_scores <- function(celltypeScores, pheno){
   annotScores <- merge(celltypeScores, pheno, by="Sample")
   maxScore = max(annotScores$Score)

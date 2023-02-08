@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_celltype_scores.R
 \name{plot_celltype_scores}
 \alias{plot_celltype_scores}
-\title{Plot cell type scores between two groups}
+\title{Plot cell type scores between groups}
 \usage{
 plot_celltype_scores(celltypeScores, pheno)
 }

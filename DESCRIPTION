@@ -19,7 +19,8 @@ Imports:
     IRanges,
     edgeR,
     EPIC,
-    stringi
+    stringi,
+    RColorBrewer
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
