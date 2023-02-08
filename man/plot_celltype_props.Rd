@@ -4,7 +4,7 @@
 \alias{plot_celltype_props}
 \title{Plot cell type proportions}
 \usage{
-plot_celltype_props(annotatedPeaks, exampleData = TRUE)
+plot_celltype_props(annotatedPeaks)
 }
 \arguments{
 \item{annotatedPeaks}{The output list of data frames from the function CelltypeSpecificPeaks()
