@@ -8,6 +8,9 @@
 #' @import ggplot2
 #' @export
 plot_celltype_props <- function(annotatedPeaks, exampleData=TRUE){
+  library(wesanderson)
+  library(ggplot2)
+  library(ggpubr)
   allPeaks = annotatedPeaks[[2]]
   CellTable <- table(allPeaks$Annot)
   PropTable <- data.frame(prop.table(CellTable)*100)
