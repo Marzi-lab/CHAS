@@ -1,16 +1,16 @@
-#' Generate celltype-specific histone acetylation scores
+#' Generate cell-type-specific histone acetylation scores
 #'
-#' This function takes as input a counts per million (cpm) matrix and the output of function
-#' CelltypeSpecificPeaks(), and will calculate celltype-specific histone acetylation scores for
-#' each sample in the cpm matrix.
-#' @param cpm A counts per million matrix with rows labeling peaks and columns labeling
-#' samples.
-#' @param celltypeSpecificPeaks The output list of dataframes from the function CelltypeSpecificPeaks() containing
+#' This function takes as input a raw counts matrix and the output of function CelltypeSpecificPeaks(),
+#' and will calculate cell-type-specific histone acetylation scores for each sample in the counts matrix.
+#' @param counts A counts per million matrix with rows labeling peaks and columns labeling samples.
+#' @param celltypeSpecificPeaks The output list of data frames from the function CelltypeSpecificPeaks() containing
 #' the annotated bulk peaks and the cell type-specific bulk peaks.
 #' @param method Whether mean or median should be used to calculate the score for each sample across cell type-specific peaks.
-#' @return Celltype-specific histone acetylation scores for each sample.
+#' @return Cell-type-specific histone acetylation scores for each sample.
 #' @export
-CelltypeScore <- function(cpm, celltypeSpecificPeaks, method) {
+CelltypeScore <- function(counts, celltypeSpecificPeaks, method) {
+  library(edgeR)
+  cpm <- cpm(counts)
   celltypeSpecific = celltypeSpecificPeaks[[1]]
   celltypeSpecific_dedup = celltypeSpecific[!duplicated(celltypeSpecific[,1]),]
   max_reads <- apply(cpm, 1, max)

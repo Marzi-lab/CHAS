@@ -2,24 +2,22 @@
 % Please edit documentation in R/CelltypeScore.R
 \name{CelltypeScore}
 \alias{CelltypeScore}
-\title{Generate celltype-specific histone acetylation scores}
+\title{Generate cell-type-specific histone acetylation scores}
 \usage{
-CelltypeScore(cpm, celltypeSpecificPeaks, method)
+CelltypeScore(counts, celltypeSpecificPeaks, method)
 }
 \arguments{
-\item{cpm}{A counts per million matrix with rows labeling peaks and columns labeling
-samples.}
+\item{counts}{A counts per million matrix with rows labeling peaks and columns labeling samples.}
 
-\item{celltypeSpecificPeaks}{The output list of dataframes from the function CelltypeSpecificPeaks() containing
+\item{celltypeSpecificPeaks}{The output list of data frames from the function CelltypeSpecificPeaks() containing
 the annotated bulk peaks and the cell type-specific bulk peaks.}
 
 \item{method}{Whether mean or median should be used to calculate the score for each sample across cell type-specific peaks.}
 }
 \value{
-Celltype-specific histone acetylation scores for each sample.
+Cell-type-specific histone acetylation scores for each sample.
 }
 \description{
-This function takes as input a counts per million (cpm) matrix and the output of function
-CelltypeSpecificPeaks(), and will calculate celltype-specific histone acetylation scores for
-each sample in the cpm matrix.
+This function takes as input a raw counts matrix and the output of function CelltypeSpecificPeaks(),
+and will calculate cell-type-specific histone acetylation scores for each sample in the counts matrix.
 }
