@@ -2,17 +2,28 @@
 % Please edit documentation in R/CelltypeProportion.R
 \name{CelltypeProportion}
 \alias{CelltypeProportion}
-\title{MF add-on Function 2: Calculate cell type proportions}
+\title{Calculate cell type proportions}
 \usage{
-CelltypeProportion(consensus, refSamples)
+CelltypeProportion(
+  newBulkCounts,
+  newRefCounts,
+  newPeaks,
+  refSamples,
+  signature
+)
 }
 \arguments{
-\item{consensus}{The output list from Function 1}
+\item{newBulkCounts}{The new counts matrix for bulk samples
+rows represent peaks, which should be the exact same peaks with exact same order as newRefCounts;
+columns represent bulk samples.}
+
+\item{newRefCounts}{The new counts matrix for reference samples
+rows represent peaks, which should be the exact same peaks with exact same order as newBulkCounts;
+columns represent reference samples.}
 
 \item{refSamples}{A data frame containing cell type annotations for reference samples
-the first column contains the sample ID used in refCounts,
-they should be in the same order as the columns in reference counts
-the second column contains the corresponding cell type for that sample}
+the first column contains the sample ID used in newRefCounts,in the same order
+the second column contains the corresponding cell type for each sample}
 }
 \value{
 A list containing the following:
@@ -23,18 +34,16 @@ A list containing the following:
 This function calculates cell type proportions using matrix factorisation
 }
 \details{
-This function takes two inputs:
-(1) the output list from Funtoin 1
-(2) cell type annotations for reference samples
+This function takes three inputs:
+(1) a new counts matrix for bulk samples
+(2) a new counts matrix for ref samples
+(3) cell type annotations for reference samples
 
-Prerequisite:
-install the EPIC R package from https://github.com/GfellerLab/EPIC
-
-This function has three steps:
-(1) calculate the median and variability for reference counts
-(2) select cell-type-specific signature peaks
-for a give peak, compare the median counts among cell types
-if the maximum counts is at least 5 times larger than the second largest
-then this peak is added to the signature peak set
-(3) run matrix factorisation with EPIC
+This function has four steps:
+(1) calculate length-normalised cpm from raw counts
+(2) calculate the median and variability for reference data
+(3) optional - select cell-type-specific signature peaks
+For a given peak, compare the median counts among cell types.
+Only keep the peaks whose maximum counts in all cell types is >= 5 times higher than the second largest.
+(4) run matrix factorisation with EPIC
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ConsensusPeaks.R
 \name{ConsensusPeaks}
 \alias{ConsensusPeaks}
-\title{MF add-on Function 1: Find Consensus Peaks}
+\title{Find Consensus Peaks}
 \usage{
 ConsensusPeaks(bulkPeaks, bulkCounts, refPeaks, refCounts, bedtools_path)
 }
@@ -24,18 +24,16 @@ the third column contains the end position of the peak
 the fourth column contains the peak identifier}
 
 \item{refCounts}{A counts matrix for reference data
-rows represent peaks, using the same identifier as refPeaks
-columns represent cell-type-specific samples, can can contain
-either: 1 sample for each cell type
-or: 3 samples for each cell type}
+the rows represent peaks, using the same identifier as refPeaks
+the columns represent cell-type samples, and can have one or multiple samples for each cell type}
 
 \item{bedtools_path}{The path to where bedtools is installed
-on Mac, this can be checked by runing "\% which bedtools" in Bash}
+for example, in MacOS, this can be checked by runing "\% which bedtools" in Terminal}
 }
 \value{
 A list containing the following:
-\link{1} data frame: bulk normalised counts
-\link{2} data frame: reference normalised counts
+\link{1} data frame: bulk counts for consensus peaks
+\link{2} data frame: reference counts for consensus peaks
 }
 \description{
 This function identifies the consensus peaks and their counts in each bulk and reference
@@ -46,9 +44,8 @@ This function takes four inputs:
 bulk: peak location, raw counts
 reference: peak location, raw counts
 
-This function has four steps:
-(1) calculate length-normalised cpm from raw counts
-(2) find consensus peaks in bulk and reference
-(3) assign new identifiers to consensus peaks
-(4) filter the length-normalised cpm matrices to contain only the consensus peaks
+This function has three steps:
+(1) find consensus peaks in bulk and reference
+(2) assign new identifiers to consensus peaks
+(3) filter the counts matrices to contain only the consensus peaks
 }
