@@ -4,10 +4,10 @@
 \alias{plot_MF_groups}
 \title{Plot MF-predicted proportions between groups}
 \usage{
-plot_MF_groups(MFscores, group)
+plot_MF_groups(celltypeProportion, group)
 }
 \arguments{
-\item{MFscores}{The output data frame from the function CelltypeScore()}
+\item{celltypeProportion}{The output list from the function CelltypeProportion()}
 
 \item{group}{A data frame containing a column named "Sample" and a column named "Group".}
 }

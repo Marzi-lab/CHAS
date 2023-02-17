@@ -4,13 +4,13 @@
 \alias{plot_MF_props}
 \title{Plot matrix-factorisation-predicted cell type proportions in bulk samples}
 \usage{
-plot_MF_props(MFscores)
+plot_MF_props(celltypeProportion)
 }
 \arguments{
-\item{MFscores}{The output data frame from the function CelltypeProportion()}
+\item{celltypeProportion}{The output list from the function CelltypeProportion()}
 }
 \value{
-A bar plot showing the cell type proportions for each sample.
+A bar plot showing the predicted cell type proportions for each sample.
 }
 \description{
 This function creates a stacked bar plot containing the predicted cell-type proportions
