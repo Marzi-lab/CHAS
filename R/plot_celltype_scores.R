@@ -16,6 +16,7 @@ plot_celltype_scores <- function(celltypeScores, pheno){
   plot <- ggplot(annotScores, aes(Celltype, Score, fill=Group)) +
     geom_violin() + labs(x="Cell type", y="Cell type score") +
     theme_classic() + scale_fill_manual(values = wes_palette("Darjeeling2")) +
-    stat_compare_means(method="t.test", aes(label = paste0("p = ", ..p.format..)), label.y=(maxScore+0.025))
+    geom_pwc(aes(group = Group, label = paste0(..p.format..)), tip.length = 0,
+             method = "t_test", bracket.nudge.y = -0.1)
   return(plot)
 }
