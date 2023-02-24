@@ -15,7 +15,7 @@
 #'   (3) filter the counts matrices to contain only the consensus peaks
 #'
 #' @param bulkPeaks A data frame of bulk H3K27ac peaks in BED format
-#'   the first column contains the chromosome number, such as 'chr1'
+#'   the first column contains the chromosome number following 'chr', such as 'chr1'
 #'   the second column contains the start position of the peak
 #'   the third column contains the end position of the peak
 #'   the fourth column contains the peak identifier
@@ -42,16 +42,20 @@
 ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path){
 
   # Step 1. find consensus peaks in bulk and reference
-  # bulk counts and peaks
+  # bulk normalised counts and peaks
   names(bulkPeaks) <- c("Chr","Start","End","ID")
   bulkMer <- merge(bulkPeaks, bulkCounts, by.x="ID", by.y="row.names")
   row.names(bulkMer) <- paste0('bulk_peak_',row.names(bulkMer))
   bulkMer$ID <- row.names(bulkMer)
-  # reference counts and peaks
+  bulkMer[,5:ncol(bulkMer)] <- bulkMer[,5:ncol(bulkMer)]/(bulkMer$End-bulkMer$Start+1)
+  bulkMer[,5:ncol(bulkMer)] <- edgeR::cpm(bulkMer[,5:ncol(bulkMer)])
+  # reference normalised counts and peaks
   names(refPeaks) <- c("Chr","Start","End","ID")
   refMer <- merge(refPeaks, refCounts, by.x="ID", by.y="row.names")
   row.names(refMer) <- paste0('ref_peak_',row.names(refMer))
   refMer$ID <- row.names(refMer)
+  refMer[,5:ncol(refMer)] <- refMer[,5:ncol(refMer)]/(refMer$End-refMer$Start+1)
+  refMer[,5:ncol(refMer)] <- edgeR::cpm(refMer[,5:ncol(refMer)])
   # merge bulk & reference peaks
   mer <- rbind(bulkMer[,1:4], refMer[,1:4])
   mer$No <- sub('chr', '', mer$Chr)
@@ -90,6 +94,6 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path
   refFil$ID_consensus <- as.numeric(sub("consensus_peak_","",refFil$ID_consensus))
   refFil <- refFil[order(refFil$ID_consensus),]
   refFil <- refFil[,6:ncol(refFil)]
-  
-  return(list(consensusPeaks=mer_out, newBulkCounts=bulkFil, newRefCounts=refFil))
+
+  return(list(consensusPeaks=mer_out, newBulkTPM=bulkFil, newRefTPM=refFil))
 }

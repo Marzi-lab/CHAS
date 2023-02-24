@@ -34,13 +34,18 @@
 #' @export
 
 CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples, signature){
-  
-  # Step 1. calculate length-normalised cpm
-  bulkTPM <- newBulkCounts/(newPeaks$End_consensus-newPeaks$Start_consensus+1)
-  refTPM <- newRefCounts/(newPeaks$End_consensus-newPeaks$Start_consensus+1)
-  bulkTPM <- edgeR::cpm(bulkTPM)
-  refTPM <- edgeR::cpm(refTPM)
-  
+
+  # Step 1. calculate normalised counts
+  if (length(signature)!=0) {
+    bulkTPM <- newBulkCounts/(newPeaks$End_consensus-newPeaks$Start_consensus+1)
+    refTPM <- newRefCounts/(newPeaks$End_consensus-newPeaks$Start_consensus+1)
+    bulkTPM <- edgeR::cpm(bulkTPM)
+    refTPM <- edgeR::cpm(refTPM)
+  } else {
+    bulkTPM <- newBulkCounts
+    refTPM <- newRefCounts
+  }
+
   # Step 2. calculate the median and variability for reference counts
   ct = as.numeric(length(unique(refSamples[,2])))
   pk = as.numeric(nrow(newRefCounts))
@@ -48,17 +53,17 @@ CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples
   row.names(ref_median) <- row.names(newRefCounts)
   names(ref_median) <- unique(refSamples[,2])
   for (x in names(ref_median)) {
-    y <- newRefCounts[,refSamples[refSamples[,2]==x,1]]
+    y <- refTPM[,refSamples[refSamples[,2]==x,1]]
     ref_median[,x] <- apply(y,1,median)
   }
   ref_var <- ref_median
   for (x in names(ref_var)) {
-    y <- newRefCounts[,refSamples[refSamples[,2]==x,1]]
+    y <- refTPM[,refSamples[refSamples[,2]==x,1]]
     ref_var[,x] <- (apply(y, 1, max) - apply(y, 1, min))/2
   }
 
   # Step 3. select signature peaks
-  if (exists("signature")) {
+  if (length(signature)!=0) {
     count <- apply(signature[, 5:(ct+4)], 2, sum)
   } else {
     sig <- function(x){sort(x,decreasing=TRUE)[2]}
@@ -72,7 +77,7 @@ CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples
   EPIC_ref <- list('refProfiles'=ref_median,
                    'sigGenes'=row.names(signature),
                    'refProfiles.var'=ref_var)
-  EPIC_scores <- EPIC::EPIC(bulk = newBulkCounts, ref = EPIC_ref)
+  EPIC_scores <- EPIC::EPIC(bulk = bulkTPM, ref = EPIC_ref)
 
   return(list(signaturePeaks = count,
               proportions = as.data.frame(EPIC_scores[["cellFractions"]])))
