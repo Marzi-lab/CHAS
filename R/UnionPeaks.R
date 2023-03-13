@@ -27,15 +27,16 @@
 #' @export
 
 UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
-  
+
   # merge all bulk & ref peaks
   merPeaks <- bulkPeaks
+  row.names(merPeaks) = NULL
   merPeaks[4] <- paste0("bulk_peak_", row.names(merPeaks))
   names(merPeaks) <- names(refPeakList[[1]])
   for (x in names(refPeakList)){
     merPeaks <- rbind(merPeaks, refPeakList[[x]])
   }
-  
+
   # sort the peaks by chromosome number, then by start location
   merPeaks$No <- sub("chr", "", merPeaks$Chr)
   merPeaks$No <- stringi::stri_replace_all_regex(merPeaks$No,
@@ -44,13 +45,12 @@ UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
   merPeaks <- merPeaks[order(merPeaks$No, merPeaks$Start),]
   merPeaks <- merPeaks[,1:4]
   write.table(merPeaks, 'merPeaks.bed', row.names = FALSE, col.names = FALSE, sep = '\t', quote=FALSE)
-  
+
   # use bedtools merge to get the union peaks
-  bedtools_path <- "/Users/yuki/opt/anaconda3/bin/bedtools"
   system(paste("cd",getwd()))
   system(paste(bedtools_path,"merge -i merPeaks.bed -c 4 -o distinct -d 20 > unionPeaks.bed"))
   unionPeaks <- read.table("unionPeaks.bed")
-  
+
   # identify cell-type-specific peaks
   celltypePeaks <- unionPeaks
   for (x in c(names(refPeakList), "bulk")) {
@@ -58,6 +58,6 @@ UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
   }
   celltypePeaks$celltype <- apply(celltypePeaks[,5:(length(names(refPeakList))+4)], 1, sum)
   celltypePeaks <- celltypePeaks[celltypePeaks$celltype==1 & celltypePeaks$bulk==TRUE,]
-  
+
   return(list(unionPeaks=unionPeaks, celltypePeaks=celltypePeaks))
 }
