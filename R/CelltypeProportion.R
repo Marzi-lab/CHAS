@@ -37,10 +37,10 @@ CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples
 
   # Step 1. calculate normalised counts
   if (length(signature)!=0) {
-    bulkTPM <- newBulkCounts/(newPeaks$End_consensus-newPeaks$Start_consensus+1)
-    refTPM <- newRefCounts/(newPeaks$End_consensus-newPeaks$Start_consensus+1)
-    bulkTPM <- edgeR::cpm(bulkTPM)
-    refTPM <- edgeR::cpm(refTPM)
+    bulkTPM <- newBulkCounts/(newPeaks$V3-newPeaks$V2+1)
+    refTPM <- newRefCounts/(newPeaks$V3-newPeaks$V2+1)
+    bulkTPM <- as.data.frame(edgeR::cpm(bulkTPM))
+    refTPM <- as.data.frame(edgeR::cpm(refTPM))
   } else {
     bulkTPM <- newBulkCounts
     refTPM <- newRefCounts
@@ -77,7 +77,7 @@ CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples
   EPIC_ref <- list('refProfiles'=ref_median,
                    'sigGenes'=row.names(signature),
                    'refProfiles.var'=ref_var)
-  EPIC_scores <- EPIC::EPIC(bulk = bulkTPM, ref = EPIC_ref)
+  suppressWarnings({EPIC_scores <- EPIC::EPIC(bulk = bulkTPM, ref = EPIC_ref)})
 
   return(list(signaturePeaks = count,
               proportions = as.data.frame(EPIC_scores[["cellFractions"]])))
