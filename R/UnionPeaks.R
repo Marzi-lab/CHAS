@@ -1,8 +1,7 @@
 #' Find Union Peaks
 #'
 #' @description
-#' This function identifies the consensus peaks, and re-count the reads in each bulk and reference
-#' samples using featureCounts
+#' This function identifies the consensus peaks, and assign cell types to them.
 #'
 #' @details
 #' This function takes two inputs, bulk peak location and reference peak location
@@ -23,7 +22,11 @@
 #' @param bedtools_path The path to where bedtools is installed
 #'   for example, in MacOS, this can be checked by runing "% which bedtools" in Terminal
 #' @import stringi
-#' @return A dataframe containing the consensus peaks
+#' @import tidyverse
+#' @import tidyr
+#' @return A list containing two dataframes
+#'   the first data frame contains the consensus peaks
+#'   the second data frame contains the cell type-specific peaks
 #' @export
 
 UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
@@ -38,7 +41,7 @@ UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
   }
 
   # sort the peaks by chromosome number, then by start location
-  merPeaks$No <- sub("chr", "", merPeaks$Chr)
+  merPeaks$No <- sub("chr", "", merPeaks[,1])
   merPeaks$No <- stringi::stri_replace_all_regex(merPeaks$No,
                  pattern = c("X","Y"), replacement = c("23", "24"), vectorize=FALSE)
   merPeaks$No <- as.numeric(merPeaks$No)
@@ -50,6 +53,13 @@ UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
   system(paste("cd",getwd()))
   system(paste(bedtools_path,"merge -i merPeaks.bed -c 4 -o distinct -d 20 > unionPeaks.bed"))
   unionPeaks <- read.table("unionPeaks.bed")
+
+  # make .saf file for read counting later
+  unionPeaks_saf <- unionPeaks
+  unionPeaks_saf$V5 <- "."
+  unionPeaks_saf$V1 <- paste(unionPeaks$V1, unionPeaks$V2, unionPeaks$V3, sep = ".")
+  unionPeaks_saf[2:4] <- unionPeaks[1:3]
+  write_tsv(unionPeaks_saf, "unionPeaks.saf", col_names = FALSE)
 
   # identify cell-type-specific peaks
   celltypePeaks <- unionPeaks
