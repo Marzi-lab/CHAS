@@ -28,11 +28,12 @@ the fourth column contains the peak identifier
 for example, in MacOS, this can be checked by runing "\% which bedtools" in Terminal}
 }
 \value{
-A dataframe containing the consensus peaks
+A list containing two dataframes
+the first data frame contains the consensus peaks
+the second data frame contains the cell type-specific peaks
 }
 \description{
-This function identifies the consensus peaks, and re-count the reads in each bulk and reference
-samples using featureCounts
+This function identifies the consensus peaks, and assign cell types to them.
 }
 \details{
 This function takes two inputs, bulk peak location and reference peak location

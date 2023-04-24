@@ -8,7 +8,7 @@ ConsensusPeaks(bulkPeaks, bulkCounts, refPeaks, refCounts, bedtools_path)
 }
 \arguments{
 \item{bulkPeaks}{A data frame of bulk H3K27ac peaks in BED format
-the first column contains the chromosome number, such as 'chr1'
+the first column contains the chromosome number following 'chr', such as 'chr1'
 the second column contains the start position of the peak
 the third column contains the end position of the peak
 the fourth column contains the peak identifier}
