@@ -17,8 +17,6 @@
 #'   the second column contains the start position of the peak
 #'   the third column contains the end position of the peak
 #'   the fourth column contains the peak identifier
-#'    - it must follow the format "celltype_peak_[number]"
-#'    - such as: "neuron_peak_1", "astrocyte_peak_1"
 #' @param bedtools_path The path to where bedtools is installed
 #'   for example, in MacOS, this can be checked by runing "% which bedtools" in Terminal
 #' @import stringi
@@ -37,6 +35,7 @@ UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
   merPeaks[4] <- paste0("bulk_peak_", row.names(merPeaks))
   names(merPeaks) <- names(refPeakList[[1]])
   for (x in names(refPeakList)){
+    refPeakList[[x]][4] <-paste0(x,"_peak_",row.names(refPeakList[[x]]))
     merPeaks <- rbind(merPeaks, refPeakList[[x]])
   }
 
