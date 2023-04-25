@@ -18,7 +18,7 @@ plot_MF_props <- function(celltypeProportion){
                   xaxt = "n", xlab = NULL, ylab = NULL, border = NA,
                   col = c("#446455", "#FDD262", "#46ACC8", "#F4B5BD",
                           brewer.pal(8, "Accent")[0:x],"#DDDDDD"))
-  legend("right",inset=c(-0.5,0),cex = 0.8,
+  legend("right",inset=c(-0.3,0),cex = 0.8,
          names(celltypeProportion[["proportions"]]),
          fill = c("#446455", "#FDD262", "#46ACC8", "#F4B5BD",
                   brewer.pal(8, "Accent")[0:x],"#DDDDDD"))
