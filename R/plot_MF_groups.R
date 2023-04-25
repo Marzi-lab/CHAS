@@ -14,7 +14,7 @@
 
 plot_MF_groups <- function(celltypeProportion, group){
   # turn wide table into long table, containing the reference cell types but not "other cells"
-  x <- ncol(celltypeProporstion[["proportions"]])
+  x <- ncol(celltypeProportion[["proportions"]])
   MF_long <- merge(celltypeProportion[["proportions"]], group, by.x="row.names", by.y="Sample")
   MF_long <- tidyr::pivot_longer(MF_long, cols=2:x, names_to = "celltype", values_to = "Score")
   # plotting
