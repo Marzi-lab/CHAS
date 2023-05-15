@@ -285,7 +285,7 @@ AD_MF_routeA <- CelltypeProportion(AD_unionCounts_bulk, AD_unionCounts_ref, AD_u
 
 ### 7. Plot the predicted cell type proportions in the bulk brain samples.
 
-``` {r, fig.width=7, fig.height=3.5, echo=FALSE}
+``` {r, fig.width=7, fig.height=3.5}
 plot_MF_props(AD_MF_routeA)
 ```
 
