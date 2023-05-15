@@ -8,7 +8,6 @@ output: rmarkdown::html_vignette
 ```{r setup, include=FALSE, dpi=400}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(CHAS)
 library(GenomicRanges)
 library(data.table)
 library(ggplot2)
@@ -21,6 +20,7 @@ library(stringi)
 library(tidyr)
 library(tidyverse)
 library(RColorBrewer)
+library(ggpattern)
 ```
 
 ## Introduction
@@ -156,7 +156,7 @@ celltype_specific_peaks <- CelltypeSpecificPeaks(EntorhinalCortex_AD_H3K27ac_pea
 *CelltypeSpecificPeaks()* takes as input the bulk peaks, the list of cell-sorted peaks, and a value from 0-1 specifying the percentage overlap required for a bulk peak to be considered cell type-specific, and outputs a list of two data frames. The first data frame contains all bulk peaks that are specific to a cell type and the second data frame contains all the bulk peaks annotated either to a cell type, 'multiple' cell types, or 'other'. 
 
 ### 5. Generate cell type-specific histone acetylation scores
-```{r}
+```{r, message=FALSE}
 celltype_scores <- CelltypeScore(EntorhinalCortex_AD_H3K27ac_counts, celltype_specific_peaks, method="mean") 
 ```
 
@@ -164,7 +164,7 @@ celltype_scores <- CelltypeScore(EntorhinalCortex_AD_H3K27ac_counts, celltype_sp
 
 ### 6. Plot the proportions of peak annotated to each cell type in the bulk H3K27ac peaks. 
 
-``` {r, fig.width=5, fig.height=3.5}
+``` {r, fig.width=5, fig.height=3.5, message=FALSE}
 plot_celltype_annotations(celltype_specific_peaks)
 ```
 
@@ -172,7 +172,7 @@ plot_celltype_annotations(celltype_specific_peaks)
 
 ### 7. Plot the cell type H3K27ac scores between two phenotype groups.
 
-``` {r, fig.width=4.5, fig.height=3.5}
+``` {r, fig.width=5, fig.height=3.5, message=FALSE}
 plot_celltype_scores(celltype_scores, AD_pheno)
 ```
 
@@ -285,7 +285,7 @@ AD_MF_routeA <- CelltypeProportion(AD_unionCounts_bulk, AD_unionCounts_ref, AD_u
 
 ### 7. Plot the predicted cell type proportions in the bulk brain samples.
 
-``` {r, fig.width=7, fig.height=3.5}
+``` {r, fig.width=7, fig.height=3.5, echo=FALSE}
 plot_MF_props(AD_MF_routeA)
 ```
 
@@ -293,7 +293,7 @@ plot_MF_props(AD_MF_routeA)
 
 ### 8. Plot the predicted cell type proportions between two phenotype groups.
 
-``` {r, fig.width=4.5, fig.height=3.5}
+``` {r, fig.width=5, fig.height=3.5}
 plot_MF_groups(AD_MF_routeA, AD_pheno)
 ```
 
@@ -361,9 +361,9 @@ AD_consensusPeaks <- ConsensusPeaks(EntorhinalCortex_AD_H3K27ac_peaks, Entorhina
 First, make a table containing two columns. The first column contains the sample ID used in the reference counts table (in this example, in the ref_H3K27ac_counts_hg38 table) and in the same order. The second column contains the corresponding cell type for each sample.
 
 ```{r}
-refSamples <- data.frame(matrix(nrow=15,ncol=2))
+refSamples <- data.frame(matrix(nrow=12,ncol=2))
 refSamples[,1] <- names(ref_H3K27ac_counts_hg38)
-refSamples[,2] <- sub(".*_", "", names(ref_H3K27ac_counts_hg38))
+refSamples[,2] <- rep(c("Astrocyte","Microglia","Neuron","Oligodendrocyte"),each=3)
 ```
 
 To predict cell type proportions, run the following function on bulk and reference counts for consensus peaks.
@@ -385,7 +385,7 @@ plot_MF_props(AD_MF_routeB)
 
 ### 6. Plot the predicted cell type proportions between two phenotype groups.
 
-``` {r, fig.width=4.5, fig.height=3.5}
+``` {r, fig.width=5, fig.height=3.5}
 plot_MF_groups(AD_MF_routeB, AD_pheno)
 ```
 

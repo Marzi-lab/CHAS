@@ -14,7 +14,7 @@ plot_MF_props <- function(celltypeProportion){
   names(celltypeProportion[["proportions"]])[5] <- "Other"
   celltypeProportion[["proportions"]] <- celltypeProportion[["proportions"]]*100
 
-  plot <- barplot(t(celltypeProportion[["proportions"]]),
+  barplot(t(celltypeProportion[["proportions"]]),
                   xaxt = "n", xlab = NULL, ylab = NULL, border = NA,
                   col = c("#446455", "#FDD262", "#46ACC8", "#F4B5BD",
                           brewer.pal(8, "Accent")[0:x],"#DDDDDD"))
@@ -24,5 +24,4 @@ plot_MF_props <- function(celltypeProportion){
                   brewer.pal(8, "Accent")[0:x],"#DDDDDD"))
   mtext("Samples", side=1, line=0.9, font=1, adj = 0.5, cex=1.2)
   mtext("Predicted proportions (%)", side=2, line=2.5,adj=0.5, font=1,cex=1.2)
-  return(plot)
 }
