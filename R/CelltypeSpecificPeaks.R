@@ -46,7 +46,7 @@ CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
   annotBulkPeaks$Celltype <- apply(annotBulkPeaks, 1, function(x) paste(names(annotBulkPeaks)[x ==1], collapse=","))
   annotBulkPeaks$Celltype[annotBulkPeaks$Celltype==""]<-"Other"
   annotBulkPeaks$Annot <- ifelse(grepl(",",annotBulkPeaks$Celltype),"Multiple",annotBulkPeaks$Celltype)
-  annotBulkPeaks <- annotBulkPeaks[,c(1,2,3,4,9,10)]
+  annotBulkPeaks <- annotBulkPeaks[,c(1:4,(ncol(annotBulkPeaks)-1):ncol(annotBulkPeaks))]
   celltypeSpecificPeaks <- merge(ctPeaks, annotBulkPeaks, by.x=c("bulkPeak", "Celltype"), by.y=c("bulkPeak", "Annot"))
   celltypeSpecificPeaks <- celltypeSpecificPeaks[,c(1,2,6,7,8,3,4,5)]
   filtered <- celltypeSpecificPeaks[celltypeSpecificPeaks$Overlap>p,]
