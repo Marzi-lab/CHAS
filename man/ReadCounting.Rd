@@ -4,7 +4,7 @@
 \alias{ReadCounting}
 \title{Read Counting}
 \usage{
-ReadCounting(unionPeaksSaf, bulkDir, refDir, threads = 8)
+ReadCounting(unionPeaksSaf, bulkDir, refDir, threads = 8, PairedEnd = FALSE)
 }
 \arguments{
 \item{unionPeaksSaf}{Path to the SAF file containing the union peaks.}

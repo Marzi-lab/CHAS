@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kitty Murphy, Yuqian Ye, Alexi Nott, and Sarah Marzi" />
 
-<meta name="date" content="2023-05-24" />
+<meta name="date" content="2023-06-01" />
 
 <title>CHAS</title>
 
@@ -342,7 +342,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">CHAS</h1>
 <h4 class="author">Kitty Murphy, Yuqian Ye, Alexi Nott, and Sarah
 Marzi</h4>
-<h4 class="date">2023-05-24</h4>
+<h4 class="date">2023-06-01</h4>
 
 
 
@@ -615,11 +615,9 @@ peaks. The second data frame contains the consensus peaks that are found
 in both the bulk samples and at least one reference cell type (for each
 cell type, TRUE means present, FALSE means absent). Both data frames
 will be used in the following <em>CelltypeProportion()</em> function.
-<em>UnionPeaks()</em> also generates a BED file called ‘unionPeaks.bed’
-which contains all the consensus peaks, and a SAF file called
-‘unionPeaks.saf’. The BED file will be used in the
-<em>CelltypeProportion()</em> function, and the SAF file will be used
-for read counting in the <em>ReadCounting()</em> function.</p>
+<em>UnionPeaks()</em> also generates a SAF file called ‘unionPeaks.saf’,
+which will be used for read counting in the <em>ReadCounting()</em>
+function.</p>
 </div>
 <div id="read-counting" class="section level3">
 <h3>5. Read counting</h3>

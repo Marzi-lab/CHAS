@@ -22,6 +22,7 @@
 #' @import stringi
 #' @import tidyverse
 #' @import tidyr
+#' @import readr
 #' @return A list containing two dataframes
 #'   the first data frame contains the consensus peaks
 #'   the second data frame contains the cell type-specific peaks
@@ -58,7 +59,7 @@ UnionPeaks <- function(bulkPeaks,refPeakList,bedtools_path){
   unionPeaks_saf$V5 <- "."
   unionPeaks_saf$V1 <- paste(unionPeaks$V1, unionPeaks$V2, unionPeaks$V3, sep = ".")
   unionPeaks_saf[2:4] <- unionPeaks[1:3]
-  write_tsv(unionPeaks_saf, "unionPeaks.saf", col_names = FALSE)
+  readr::write_tsv(unionPeaks_saf, "unionPeaks.saf", col_names = FALSE)
 
   # identify cell-type-specific peaks
   celltypePeaks <- unionPeaks
