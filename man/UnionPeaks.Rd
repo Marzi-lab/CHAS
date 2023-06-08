@@ -18,21 +18,18 @@ H3K27ac peaks for one cell type in BED format
 the first column contains the chromosome number, such as 'chr1'
 the second column contains the start position of the peak
 the third column contains the end position of the peak
-the fourth column contains the peak identifier
-\itemize{
-\item it must follow the format "celltype_peak_\link{number}"
-\item such as: "neuron_peak_1", "astrocyte_peak_1"
-}}
+the fourth column contains the peak identifier}
 
 \item{bedtools_path}{The path to where bedtools is installed
 for example, in MacOS, this can be checked by runing "\% which bedtools" in Terminal}
 }
 \value{
-A dataframe containing the consensus peaks
+A list containing two dataframes
+the first data frame contains the consensus peaks
+the second data frame contains the cell type-specific peaks
 }
 \description{
-This function identifies the consensus peaks, and re-count the reads in each bulk and reference
-samples using featureCounts
+This function identifies the consensus peaks, and assign cell types to them.
 }
 \details{
 This function takes two inputs, bulk peak location and reference peak location

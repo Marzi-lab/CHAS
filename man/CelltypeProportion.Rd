@@ -24,6 +24,12 @@ columns represent reference samples.}
 \item{refSamples}{A data frame containing cell type annotations for reference samples
 the first column contains the sample ID used in newRefCounts,in the same order
 the second column contains the corresponding cell type for each sample}
+
+\item{signature}{A list of peak ID that will be used as signature peaks for matrix fatorisation.
+When there is no bam files to be used for re-counting reads for consensus peaks (MF Route B), no signature peaks
+need to be provided (i.e., signature = NULL). The function will automatically select signature peaks based on the
+read counts in different reference cells. Only keep the peaks whose maximum counts in all cell types is >= 5
+times higher than the second largest.}
 }
 \value{
 A list containing the following:
@@ -45,5 +51,6 @@ This function has four steps:
 (3) optional - select cell-type-specific signature peaks
 For a given peak, compare the median counts among cell types.
 Only keep the peaks whose maximum counts in all cell types is >= 5 times higher than the second largest.
+This ensures that the selected peaks have high signal in only one cell type, hence a 'signature' for that cell type.
 (4) run matrix factorisation with EPIC
 }

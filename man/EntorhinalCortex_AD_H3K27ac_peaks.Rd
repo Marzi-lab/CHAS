@@ -5,7 +5,7 @@
 \alias{EntorhinalCortex_AD_H3K27ac_peaks}
 \title{Entorhinal cortex H3K27ac peaks with hg38 coordinates.}
 \format{
-A data frame with 70923 rows and 4 variables:
+A data frame with 73142 rows and 4 variables:
 \describe{
 \item{CHR}{chromosome number}
 \item{Start}{Start location of peak in BP}
@@ -15,13 +15,12 @@ A data frame with 70923 rows and 4 variables:
 }
 }
 \source{
-Generated using data from \url{https://www.nature.com/articles/s41593-018-0253-7}
+Generated using data from \url{https://github.com/nottalexi/brain-cell-type-peak-files/tree/master/H3K27ac}
 }
 \usage{
 EntorhinalCortex_AD_H3K27ac_peaks
 }
 \description{
-A dataset containing entorhinal cortex H3K27ac peaks from AD and control brains
-with hg38 coordinates in bed file format.
+A dataset containing H3K27ac peaks from entorhinal cortex from AD cases and controls.
 }
 \keyword{datasets}
