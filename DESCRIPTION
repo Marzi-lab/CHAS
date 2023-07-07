@@ -23,7 +23,8 @@ Imports:
     stringi,
     tidyr,
     tidyverse,
-    wesanderson
+    wesanderson, 
+    ggpattern
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
