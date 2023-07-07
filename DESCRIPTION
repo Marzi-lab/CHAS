@@ -12,7 +12,6 @@ biocViews:
 Imports: 
     data.table,
     dplyr,
-    EPIC,
     edgeR,
     GenomicRanges,
     ggplot2,
