@@ -41,7 +41,7 @@ CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
   ctPeaksList <- lapply(peaksList, `[[`, 1)
   ctPeaks <- do.call("rbind", ctPeaksList)
   annotBulkPeaksList <- lapply(peaksList, `[[`, 2)
-  annotBulkPeaks <- Reduce(dplyr::full_join, annotBulkPeaksList
+  annotBulkPeaks <- Reduce(dplyr::full_join, annotBulkPeaksList)
   annotBulkPeaks$Celltype <- apply(annotBulkPeaks, 1, function(x) paste(names(annotBulkPeaks)[x ==1], collapse=","))
   annotBulkPeaks$Celltype[annotBulkPeaks$Celltype==""]<-"Other"
   annotBulkPeaks$Annot <- ifelse(grepl(",",annotBulkPeaks$Celltype),"Multiple",annotBulkPeaks$Celltype)
