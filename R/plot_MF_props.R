@@ -11,7 +11,7 @@
 plot_MF_props <- function(celltypeProportion){
   par(mar=c(3, 4, 2, 8), xpd=TRUE)
   x <- ncol(celltypeProportion[["proportions"]])-5
-  names(celltypeProportion[["proportions"]])[5] <- "Other"
+  names(celltypeProportion[["proportions"]])[5+x] <- "Other"
   celltypeProportion[["proportions"]] <- celltypeProportion[["proportions"]]*100
 
   barplot(t(celltypeProportion[["proportions"]]),
