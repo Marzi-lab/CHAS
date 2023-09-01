@@ -29,3 +29,12 @@ This function takes as input bulk H3K27ac peaks and cell type sorted H3K27ac pea
 and will generate a data frame with annotated bulk peaks and another data frame
 made up of the cell type specific bulk peaks.
 }
+\examples{
+bulkPeaks <- CHAS::EntorhinalCortex_AD_H3K27ac_peaks
+celltypePeaks <- list(Astrocyte = CHAS::astro_H3K27ac_hg38,
+                      Microglia = CHAS::mgl_H3K27ac_hg38)
+celltype_specific_peaks <- CelltypeSpecificPeaks(
+  bulkPeaks = bulkPeaks,
+  celltypePeaks = celltypePeaks,
+  p =  0.5)
+}

@@ -8,9 +8,9 @@
 A data frame with 73142 rows and 4 variables:
 \describe{
 \item{CHR}{chromosome number}
-\item{Start}{Start location of peak in BP}
-\item{End}{End location of peak in BP}
-\item{Peak}{Peak name}
+\item{start}{Start location of peak in BP}
+\item{end}{End location of peak in BP}
+\item{peak}{Peak name}
 ...
 }
 }
@@ -21,6 +21,7 @@ Generated using data from \url{https://github.com/nottalexi/brain-cell-type-peak
 EntorhinalCortex_AD_H3K27ac_peaks
 }
 \description{
-A dataset containing H3K27ac peaks from entorhinal cortex from AD cases and controls.
+A dataset containing H3K27ac peaks from entorhinal cortex
+from AD cases and controls.
 }
 \keyword{datasets}

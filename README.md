@@ -12,7 +12,7 @@ status](https://github.com/neurogenomics/CHAS/workflows/rworkflows/badge.svg)](h
 <br>
 <a href='https://app.codecov.io/gh/neurogenomics/CHAS/tree/master' target='_blank'><img src='https://codecov.io/gh/neurogenomics/CHAS/branch/master/graphs/icicle.svg' title='Codecov icicle graph' width='200' height='50' style='vertical-align: top;'></a>  
 <h4>  
-Authors: <i>Kitty Murphy, Yuqian Ye, Alexi Nott, Sarah Marzi</i>  
+Authors: <i>Kitty Murphy</i>  
 </h4>
 <h4>  
 README updated: <i>Sep-01-2023</i>  
@@ -23,15 +23,6 @@ README updated: <i>Sep-01-2023</i>
 ## `CHAS`: Cell type-specific Histone Acetylation Score
 
 ### CHAS is an R package which integrates cell sorted H3K27ac datato identify cell type-specific peaks in bulk tissue H3K27ac profiles.Using the cell type-specific H3K27ac peaks, one can then calculate celltype-specific acetylation scores to act as a proxy for cell type proportionin the bulk tissue sample.
-
-If you use `CHAS`, please cite:
-
-<!-- Modify this by editing the file: inst/CITATION  -->
-
-> CHAS, a deconvolution tool, infers cell type-specific signatures in
-> bulk brain histone acetylation studies of brain disorders. Kitty B.
-> Murphy, Alexi Nott, Sarah J. Marzi. bioRxiv, 2021.09.06.459142;
-> <https://doi.org/10.1101/2021.09.06.459142>
 
 ## Introduction
 

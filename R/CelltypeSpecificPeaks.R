@@ -19,10 +19,23 @@
 #' @import GenomicRanges
 #' @import IRanges
 #' @export
+#' @examples
+#' bulkPeaks <- CHAS::EntorhinalCortex_AD_H3K27ac_peaks
+#' celltypePeaks <- list(Astrocyte = CHAS::astro_H3K27ac_hg38,
+#'                       Microglia = CHAS::mgl_H3K27ac_hg38)
+#' celltype_specific_peaks <- CelltypeSpecificPeaks(
+#'   bulkPeaks = bulkPeaks,
+#'   celltypePeaks = celltypePeaks,
+#'   p =  0.5)
 CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
   peaksList <- lapply(names(celltypePeaks), function(x){
-    bulkGR <- GenomicRanges::GRanges(seqnames=bulkPeaks[,1], IRanges::IRanges(start=bulkPeaks[,2], end=bulkPeaks[,3]))
-    celltypeGR <- GenomicRanges::GRanges(seqnames=celltypePeaks[[x]][,1], IRanges::IRanges(start=celltypePeaks[[x]][,2], end=celltypePeaks[[x]][,3]))
+    bulkGR <- GenomicRanges::GRanges(seqnames=bulkPeaks[,1],
+                                     IRanges::IRanges(start=bulkPeaks[,2],
+                                                      end=bulkPeaks[,3]))
+    celltypeGR <- GenomicRanges::GRanges(
+      seqnames=celltypePeaks[[x]][,1],
+      IRanges::IRanges(start=celltypePeaks[[x]][,2],
+                       end=celltypePeaks[[x]][,3]))
     olGR <- GenomicRanges::findOverlaps(bulkGR, celltypeGR)
     olPintersect <- IRanges::pintersect(bulkGR[olGR@from], celltypeGR[olGR@to])
     percOl <- IRanges::width(olPintersect) / IRanges::width(celltypeGR[olGR@to])
@@ -42,7 +55,8 @@ CelltypeSpecificPeaks <- function(bulkPeaks, celltypePeaks, p){
   ctPeaks <- do.call("rbind", ctPeaksList)
   annotBulkPeaksList <- lapply(peaksList, `[[`, 2)
   annotBulkPeaks <- Reduce(dplyr::full_join, annotBulkPeaksList)
-  annotBulkPeaks$Celltype <- apply(annotBulkPeaks, 1, function(x) paste(names(annotBulkPeaks)[x ==1], collapse=","))
+  annotBulkPeaks$Celltype <- apply(annotBulkPeaks, 1,
+                                   function(x) paste(names(annotBulkPeaks)[x ==1], collapse=","))
   annotBulkPeaks$Celltype[annotBulkPeaks$Celltype==""]<-"Other"
   annotBulkPeaks$Annot <- ifelse(grepl(",",annotBulkPeaks$Celltype),"Multiple",annotBulkPeaks$Celltype)
   annotBulkPeaks <- annotBulkPeaks[,c(1:4,(ncol(annotBulkPeaks)-1):ncol(annotBulkPeaks))]

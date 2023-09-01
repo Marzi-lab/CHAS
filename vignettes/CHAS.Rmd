@@ -1,7 +1,7 @@
 ---
 title: "CHAS"
 author: "Kitty Murphy, Yuqian Ye, Alexi Nott, and Sarah Marzi"
-date: "`r Sys.Date()`"
+date: "`<h4>Vignette updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>`"
 output: rmarkdown::html_vignette
 vignette: >
     %\VignetteIndexEntry{Get Started} 
@@ -11,21 +11,6 @@ vignette: >
 
 ```{r setup, include=FALSE, dpi=400}
 knitr::opts_chunk$set(echo = TRUE)
-
-library(GenomicRanges)
-library(data.table)
-library(ggplot2)
-library(wesanderson)
-library(dplyr)
-library(ggpubr)
-library(edgeR)
-library(ggpubr)
-library(stringi)
-library(tidyr)
-library(tidyverse)
-library(RColorBrewer)
-library(ggpattern)
-library(readr)
 ```
 
 ## Introduction

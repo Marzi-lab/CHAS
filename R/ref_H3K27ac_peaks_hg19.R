@@ -8,7 +8,7 @@
 #'   \item{CHR}{chromosome number}
 #'   \item{Start}{Start location of peak in BP}
 #'   \item{End}{End location of peak in BP}
-#'   \item{Peak}{Peak name}
+#'   \item{Geneid}{Peak name}
 #'   ...
 #' }
 #'

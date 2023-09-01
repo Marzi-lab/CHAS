@@ -13,9 +13,9 @@
 ## Bug fixes 
 
 * *DESCRIPTION*
-  - Add missing Import: `EPIC`.
-  - Add missing Import: `readr`.
-  - Removed unused Import: `data.table`
+  - Add missing Imports: `EPIC`, `readr`
+  - Removed unused Imports: `data.table`
+  - Add to Suggests to avoid error: `rmarkdown`,`markdown`,`knitr`
 * *CelltypeProportion.R*
   - Add `requireNamespace("EPIC")`.
   - Used "\" to escape square brackets in Roxygen notes: e.g. "2"--> "\[2\]"
@@ -29,6 +29,15 @@
   - Import `graphics`
 * Change `@return` --> `@returns` throughout to allow multiline Roxygen notes.
 * Fix typo "runing" --> "running" in Roxygen notes throughout.
-* Compressed data with `tools::resaveRdaFiles(list.files("data/", full.names = TRUE))`
+* Handling large *data*:
+  - Ideally these data should be stored outside the package (e.g. GitHub Releases) 
+    and cached so that the package isn't slowed down by them. But for now I:
+  - Compressed data with: `tools::resaveRdaFiles(list.files("data/", full.names = TRUE),  compress = "xz")`
+  - Added `LazyDataCompression: xz` to the *DESCRIPTION* file.
 * *vignettes*
   - Add to yaml header so vignette gets indexed.
+  - *CHAS.Rmd*: Removed all library calls except `library(CHAS)`. 
+    If you've done all your imports correctly, then you don't need to load 
+    all these packages up at the beginning.
+* *data.R*
+  - Added dummy docs for `AD_pheno` and `AD_unionCounts`

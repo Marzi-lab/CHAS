@@ -45,7 +45,7 @@ jobs:
       with:
         run_bioccheck: ${{ false }}
         run_rcmdcheck: ${{ true }}
-        as_cran: ${{ false }}
+        as_cran: ${{ true }}
         run_vignettes: ${{ true }}
         has_testthat: ${{ true }}
         run_covr: ${{ true }}
