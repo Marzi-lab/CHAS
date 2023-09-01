@@ -33,8 +33,8 @@ times higher than the second largest.}
 }
 \value{
 A list containing the following:
-\link{1} a list: numbers of signature peaks for each cell type
-\link{2} data frame: EPIC-predicted cell-type proportions
+[1] a list: numbers of signature peaks for each cell type
+[2] data frame: EPIC-predicted cell-type proportions
 }
 \description{
 This function calculates cell type proportions using matrix factorisation

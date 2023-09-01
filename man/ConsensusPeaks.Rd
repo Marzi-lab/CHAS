@@ -8,7 +8,8 @@ ConsensusPeaks(bulkPeaks, bulkCounts, refPeaks, refCounts, bedtools_path)
 }
 \arguments{
 \item{bulkPeaks}{A data frame of bulk H3K27ac peaks in BED format
-the first column contains the chromosome number following 'chr', such as 'chr1'
+the first column contains the chromosome number following 'chr',
+such as 'chr1'
 the second column contains the start position of the peak
 the third column contains the end position of the peak
 the fourth column contains the peak identifier}
@@ -25,19 +26,21 @@ the fourth column contains the peak identifier}
 
 \item{refCounts}{A counts matrix for reference data
 the rows represent peaks, using the same identifier as refPeaks
-the columns represent cell-type samples, and can have one or multiple samples for each cell type}
+the columns represent cell-type samples, and can have one or multiple
+samples for each cell type.}
 
 \item{bedtools_path}{The path to where bedtools is installed
-for example, in MacOS, this can be checked by runing "\% which bedtools" in Terminal}
+for example, in MacOS, this can be checked by running "\% which bedtools"
+in Terminal.}
 }
 \value{
 A list containing the following:
-\link{1} data frame: bulk counts for consensus peaks
-\link{2} data frame: reference counts for consensus peaks
+[1] data frame: bulk counts for consensus peaks
+[2] data frame: reference counts for consensus peaks
 }
 \description{
-This function identifies the consensus peaks and their counts in each bulk and reference
-samples by switching IDs
+This function identifies the consensus peaks and their counts
+in each bulk and reference samples by switching IDs
 }
 \details{
 This function takes four inputs:

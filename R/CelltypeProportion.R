@@ -32,14 +32,17 @@
 #'   need to be provided (i.e., signature = NULL). The function will automatically select signature peaks based on the
 #'   read counts in different reference cells. Only keep the peaks whose maximum counts in all cell types is >= 5
 #'   times higher than the second largest.
-#' @return  A list containing the following:
-#'   [1] a list: numbers of signature peaks for each cell type
-#'   [2] data frame: EPIC-predicted cell-type proportions
+#' @returns  A list containing the following:
+#'   \[1\] a list: numbers of signature peaks for each cell type
+#'   \[2\] data frame: EPIC-predicted cell-type proportions
 #' @import EPIC
 #' @import edgeR
 #' @export
-
-CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples, signature){
+CelltypeProportion <- function(newBulkCounts,
+                               newRefCounts,
+                               newPeaks,
+                               refSamples,
+                               signature){
 
   # Step 1. calculate normalised counts
   if (length(signature)!=0) {

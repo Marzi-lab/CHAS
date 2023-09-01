@@ -1,33 +1,52 @@
 Package: CHAS
-Title: Cell type deconvolution of bulk tissue histone acetylomes from epigenetic data
-Version: 0.99.7
-Description: CHAS is an R package which integrates cell sorted H3K27ac data to identify cell type-specific peaks in bulk tissue H3K27ac profiles. Using the cell type-specific H3K27ac peaks, one can then calculate cell type-specific acetylation scores to act as a proxy for cell type proportion in the bulk tissue sample.
+Title: Cell type-specific Histone Acetylation Score
+Version: 0.99.8
+Description: CHAS is an R package which integrates cell sorted H3K27ac data
+  to identify cell type-specific peaks in bulk tissue H3K27ac profiles. 
+  Using the cell type-specific H3K27ac peaks, one can then calculate cell 
+  type-specific acetylation scores to act as a proxy for cell type proportion 
+  in the bulk tissue sample.
 Authors@R: 
-    person(given = "Kitty",
-           family = "Murphy",
-           role = c("aut", "cre"),
-           email = "c.murphy19@ic.ac.uk",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+  c(
+  person(given = "Kitty",
+         family = "Murphy",
+         role = c("aut", "cre"),
+         email = "c.murphy19@ic.ac.uk",
+         comment = c(ORCID = "YOUR-ORCID-ID")),
+  person(given = "Yuqian",
+         family = "Ye",
+         role = c("aut")),
+  person(given = "Alexi",
+         family = "Nott",
+         role = c("aut")),
+  person(given = "Sarah",
+         family = "Marzi",
+         role = c("aut"))
+  )
+Depends: R (>= 3.6.0)
 biocViews:
 Imports: 
-    data.table,
-    dplyr,
-    edgeR,
-    GenomicRanges,
-    ggplot2,
-    ggpubr,
-    IRanges,
-    RColorBrewer,
-    Rsubread,
-    stringi,
-    tidyr,
-    tidyverse,
-    wesanderson, 
-    ggpattern
+  dplyr,
+  edgeR,
+  GenomicRanges,
+  ggplot2,
+  ggpubr,
+  IRanges,
+  RColorBrewer,
+  Rsubread,
+  stringi,
+  tidyr,
+  tidyverse,
+  wesanderson, 
+  ggpattern,
+  readr,
+  EPIC
+Remotes:
+  github::GfellerLab/EPIC
+URL: https://github.com/neurogenomics/CHAS/
+BugReports: https://github.com/neurogenomics/CHAS/issues/
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Depends: 
-    R (>= 3.6.0)

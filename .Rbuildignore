@@ -1,2 +1,6 @@
 ^CHAS\.Rproj$
 ^\.Rproj\.user$
+imgs
+.github
+README.Rmd
+README.md

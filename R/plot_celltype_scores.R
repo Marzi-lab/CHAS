@@ -4,7 +4,7 @@
 #' and plots a violin plot of the cell type scores between two different groups.
 #' @param celltypeScores The output data frame from the function CelltypeScore()
 #' @param pheno A data frame containing a column named Sample and a column named Group.
-#' @return A violin plot showing the cell type scores between two different groups.
+#' @returns A violin plot showing the cell type scores between two different groups.
 #' @import ggplot2
 #' @import ggpubr
 #' @import wesanderson
@@ -12,11 +12,14 @@
 #' @export
 
 plot_celltype_scores <- function(celltypeScores, pheno){
+
   annotScores <- merge(celltypeScores, pheno, by="Sample")
   minScore = min(annotScores$Score)
   maxScore = max(annotScores$Score)
-  plot <- ggplot(annotScores, aes(fill=Celltype, y=Score, x=Celltype, pattern = Group, pattern_type = Group)) +
-    geom_boxplot_pattern(pattern_fill = "grey", colour = "black", pattern_spacing = 0.02,
+  plot <- ggplot(annotScores, aes(fill=Celltype, y=Score, x=Celltype,
+                                  pattern = Group, pattern_type = Group)) +
+    geom_boxplot_pattern(pattern_fill = "grey", colour = "black",
+                         pattern_spacing = 0.02,
                          pattern_frequency = 1, pattern_angle = 45) +
     ggpubr::theme_pubr() +
     theme(legend.position = "top", legend.title = element_blank(), text = element_text(size=12)) +

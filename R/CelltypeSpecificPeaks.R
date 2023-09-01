@@ -14,7 +14,7 @@
 #' the fourth column containing the peak identifier.
 #' @param p A number from 0-1 determining the percentage overlap required for a bulk peak
 #' to be considered cell type specific.
-#' @return A data frame of annotated bulk peaks and a data frame containing only the cell type
+#' @returns A data frame of annotated bulk peaks and a data frame containing only the cell type
 #' specific bulk peaks.
 #' @import GenomicRanges
 #' @import IRanges

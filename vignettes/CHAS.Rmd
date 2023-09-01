@@ -1,0 +1,406 @@
+---
+title: "CHAS"
+author: "Kitty Murphy, Yuqian Ye, Alexi Nott, and Sarah Marzi"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Get Started} 
+    %\usepackage[utf8]{inputenc}
+    %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include=FALSE, dpi=400}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(GenomicRanges)
+library(data.table)
+library(ggplot2)
+library(wesanderson)
+library(dplyr)
+library(ggpubr)
+library(edgeR)
+library(ggpubr)
+library(stringi)
+library(tidyr)
+library(tidyverse)
+library(RColorBrewer)
+library(ggpattern)
+library(readr)
+```
+
+## Introduction
+
+Cell type identity is a major driver of epigenetic variation, making biological interpretation of bulk tissue epigenomes difficult. Here we present *CHAS* (cell type-specific histone acetylation score), an R package for inferring cell type-specific signatures in bulk brain H3K27ac profiles. *CHAS* annotates peaks identified in bulk brain studies of H3K27ac to cell-type-specific signals in four major brain cell types, and based on signal intensities generates cell type-specific histone acetylation scores to act as a proxy for cell type proportion. In addition to the default *CHAS* functions, the *CHAS-MF* (MF stands for matrix factorisation) functions predict the proportions of each cell type using matrix factorisation, based on the signal intensities of both the bulk samples and purified cell types.
+
+*CHAS* was successfully validated in pseudo-bulk samples of known cell-type proportions and applied to three neurodegenerative disorder epigenome-wide association studies conducted on bulk brain tissue. *CHAS* adds to the existing frameworks for cell type deconvolution in bulk brain tissue and we would expect to be able to extend the use of *CHAS* to other bulk tissue H3K27ac profiles.
+
+## *CHAS* workflow 
+
+**1. Identification of cell type-specific peaks in bulk tissue H3K27ac profiles.**
+
+*CHAS* annotates peaks identified in bulk tissue studies of H3K27ac to their cell type-specific signals by overlapping the bulk peaks with cell-sorted H3K27ac peaks and identifying which of the bulk peaks are specific to a given cell type. For a bulk peak to be defined as cell type-specific two criteria must be met: (i) the bulk peak is annotated only to a single cell type; (ii) the bulk peak overlaps a predefined percentage of that cell type’s peak.
+
+**2. Cell type-specific histone acetylation score generation.**
+
+Using a counts per million matrix and the cell type-specific bulk H3K27ac peaks identified in step 1 of the workflow, *CHAS* generates scores by averaging the normalised signal intensity of a sample across all peaks specific to a given cell type, thereby deriving a proxy of the proportion of that cell type in the given bulk sample. As a constraint from peak-normalisation, the maximum signal intensity for any given peak and sample is 1 and the resulting score will lie between 0 and 1 for a given sample and cell type.
+
+## *CHAS-MF* workflow
+
+### CHAS-MF with bam files for bulk and reference samples
+
+**1. Create consensus peaks**
+
+*CHAS-MF* merges bulk peaks and reference peaks to create consensus peaks. Each consensus peak is then annotated with corresponding cell types, depending on whether the consensus peak covers cell type-specific signals. A SAF file containing the consensus peaks will be generated during this step, to be used for read counting.
+
+**2. Read counting**
+
+This step requires the user to use whichever read-counting method they prefer to generate counts using the consensus peak SAF file. This requires the user to prepare bam files for bulk samples and reference samples in advance.
+
+**3. Matrix factorisation**
+
+Matrix factorisation predicts the proportion of each cell type in a bulk sample, based on the signal intensity (read counts for the consensus peaks) of the bulk and cell type-specific reference samples. The calculation is performed on normalised read counts (controlling for library size and peak length) by the R package *EPIC*, described in the publication from Racle et al., 2017, available at https://elifesciences.org/articles/26476. If multiple reference samples are used for one cell type, the median value will be used as the main input for matrix factorisation, and the signal variability will also be taken into account, as described by Racle et al., 2017.
+
+### CHAS-MF without bam files for bulk and reference samples
+
+**1. Create consensus peaks and use raw counts as approximate**
+
+*CHAS-MF* merges bulk peaks and reference peaks to create consensus peaks. Each consensus peak is then annotated with corresponding cell types, depending on whether the consensus peak covers cell type-specific signals. The original read counts for bulk and reference peaks will be used as an approximate for the read counts of each bulk and reference sample for the consensus peaks. If there are multiple peaks from one sample merging into the same consensus peak, the read count for the first peak will be used as an approximate for the total read count for the entire consensus region.
+
+**2. Matrix factorisation**
+
+Matrix factorisation predicts the proportion of each cell type in a bulk sample, based on the signal intensity (read counts for the consensus peaks) of the bulk and cell type-specific reference samples. The calculation is performed on normalised read counts (controlling for library size and peak length) by the R package *EPIC*, described in the publication from Racle et al., 2017, available at https://elifesciences.org/articles/26476. If multiple reference samples are used for one cell type, the median value will be used as the main input for matrix factorisation, and the signal variability will also be taken into account, as described by Racle et al., 2017.
+
+
+## Installing *CHAS* 
+
+```
+if (!require("remotes")) install.packages("remotes")
+remotes::install_github("neurogenomics/CHAS")
+```
+
+```{r}
+library(CHAS)
+```
+
+## Citation
+
+* If you use the cell-sorted H3K27ac data associated with this package 
+then please cite the following paper: 
+[Nott, et al. Brain cell type-specific enhancer-promoter interactome maps and disease-risk association. Science, 2019.](https://science.sciencemag.org/content/366/6469/1134.abstract)
+* If you use the entorhinal cortex peaks and/or counts available within this package
+then please cite the following paper: 
+[Marzi, et al. A histone acetylome-wide association study of Alzheimer’s disease identifies disease-associated H3K27ac differences in the entorhinal cortex. Nature Neuroscience, 2018.](https://www.nature.com/articles/s41593-018-0253-7#Sec11)
+
+
+## Tutorial: CHAS 
+
+*CHAS* requires 3 inputs to run:
+
+1. **Bulk tissue H3K27ac peaks in BED format (Column 1 - chrom, Column 2 - chromStart, Column 3 - ChromEnd, Column 4 - name)**. The columns can be named as you like but __the order must be as stated here.__ 
+2. **Cell sorted H3K27ac peaks in BED format (Col 1 - chrom, Col 2 - chromStart, Col 3 - ChromEnd, Col 4 - name)**. The columns can be named as you like but __the order must be as stated here.__ 
+3. **Counts per million mapped reads (cpm) matrix**, with rows labelling peaks and columns labelling samples.
+
+**Note:** If you are using the cell-sorted H3K27ac peaks provided in this package, **column 1 of your bulk tissue H3K27ac peaks file must be in this format - chrN**, where N is the chromosome name e.g. 1 or X. 
+
+In this tutorial, we will use entorhinal cortex H3K27ac peaks from [Marzi et al. 2018](https://www.nature.com/articles/s41593-018-0253-7), cell-sorted H3K27ac peaks from [Nott et al. 2019](https://science.sciencemag.org/content/366/6469/1134.long), and a counts-per-million matrix constructed using the entorhinal cortex H3K27ac data from [Marzi et al. 2018](https://www.nature.com/articles/s41593-018-0253-7). 
+
+### 1. Load the example bulk data
+
+Bulk brain peaks: 
+```{r}
+data(EntorhinalCortex_AD_H3K27ac_peaks)
+```
+
+Counts matrix: 
+```{r}
+data(EntorhinalCortex_AD_H3K27ac_counts)
+```
+
+Phenotype information: 
+```{r}
+data(AD_pheno)
+```
+
+### 2. Load the reference data
+
+<p>The cell-sorted H3K27ac peaks are available in two human genome reference builds: hg19 and hg38.<br> 
+To load the **hg19** peaks:</p>
+
+```{r}
+data(astro_H3K27ac_hg19)
+data(mgl_H3K27ac_hg19)
+data(neu_H3K27ac_hg19)
+data(olig_H3K27ac_hg19)
+```
+
+To load the **hg38** peaks:
+
+```{r}
+data(astro_H3K27ac_hg38)
+data(mgl_H3K27ac_hg38)
+data(neu_H3K27ac_hg38)
+data(olig_H3K27ac_hg38)
+```
+
+### 3. Generate a list containing data frames of all cell-sorted H3K27ac peaks
+
+This example uses the cell-sorted peaks in the **hg38** build. 
+
+```{r}
+celltypePeaks <- list(Astrocyte = astro_H3K27ac_hg38, Microglia = mgl_H3K27ac_hg38, Neuron = neu_H3K27ac_hg38, Oligodendrocyte = olig_H3K27ac_hg38)
+```
+
+### 4. Annotate bulk H3K27ac peaks and identify which are cell type-specific
+
+```{r, message=FALSE}
+celltype_specific_peaks <- CelltypeSpecificPeaks(EntorhinalCortex_AD_H3K27ac_peaks, celltypePeaks, 0.5) 
+```
+
+*CelltypeSpecificPeaks()* takes as input the bulk peaks, the list of cell-sorted peaks, and a value from 0-1 specifying the percentage overlap required for a bulk peak to be considered cell type-specific, and outputs a list of two data frames. The first data frame contains all bulk peaks that are specific to a cell type and the second data frame contains all the bulk peaks annotated either to a cell type, 'multiple' cell types, or 'other'. 
+
+### 5. Generate cell type-specific histone acetylation scores
+```{r, message=FALSE}
+celltype_scores <- CelltypeScore(EntorhinalCortex_AD_H3K27ac_counts, celltype_specific_peaks, method="mean") 
+```
+
+*CelltypeScore()* uses a counts-per-million matrix and the output of the function *CelltypeSpecificPeaks()* to generate cell type-specific H3K27ac scores for each sample in the counts matrix. For 'method', specify either mean or median to calculate the mean/median score for each sample. 
+
+### 6. Plot the proportions of peak annotated to each cell type in the bulk H3K27ac peaks. 
+
+``` {r, fig.width=5, fig.height=3.5, message=FALSE}
+plot_celltype_annotations(celltype_specific_peaks)
+```
+
+*plot_celltype_props()* uses the annotated bulk H3K27ac peaks from *CelltypeSpecificPeaks()* to generate a stacked bar plot of the proportions of each cell type in the bulk H3K27ac peak set.
+
+### 7. Plot the cell type H3K27ac scores between two phenotype groups.
+
+``` {r, fig.width=5, fig.height=3.5, message=FALSE}
+plot_celltype_scores(celltype_scores, AD_pheno)
+```
+
+*plot_celltype_scores()* requires the cell type-specific scores generated using *CelltypeScore()* and the phenotype information for each AD brain sample to generate a violin plot of the proportions of each cell type. The phenotype information is fed into the *plot_MF_groups()* as a data frame containing two columns. The first column 'Sample' has the sample IDs that match those labelling the columns in the counts matrix. The second column 'Group' contains the group to which each sample belongs, e.g., case or control.
+
+
+## Tutorial: CHAS-MF
+
+This section shows how to use *CHAS-MF* with access to bulk and reference bam files.
+
+### 1. Load the example bulk data
+
+Bulk brain peaks: 
+```{r, eval=FALSE}
+data(EntorhinalCortex_AD_H3K27ac_peaks)
+```
+
+Counts matrix: 
+```{r, eval=FALSE}
+data(EntorhinalCortex_AD_H3K27ac_counts)
+```
+
+Phenotype information: 
+```{r, eval=FALSE}
+data(AD_pheno)
+```
+
+### 2. Load the reference data
+
+<p>The cell-sorted H3K27ac peaks are available in two human genome reference builds: hg19 and hg38.<br> 
+To load the **hg19** peaks:</p>
+
+```{r, eval=FALSE}
+data(astro_H3K27ac_hg19)
+data(mgl_H3K27ac_hg19)
+data(neu_H3K27ac_hg19)
+data(olig_H3K27ac_hg19)
+```
+
+To load the **hg38** peaks:
+
+```{r, eval=FALSE}
+data(astro_H3K27ac_hg38)
+data(mgl_H3K27ac_hg38)
+data(neu_H3K27ac_hg38)
+data(olig_H3K27ac_hg38)
+```
+
+### 3. Generate a list containing data frames of all cell-sorted H3K27ac peaks
+
+This example uses the cell-sorted peaks in the **hg38** build. 
+
+```{r, eval=FALSE}
+celltypePeaks <- list(Astrocyte = astro_H3K27ac_hg38, Microglia = mgl_H3K27ac_hg38, Neuron = neu_H3K27ac_hg38, Oligodendrocyte = olig_H3K27ac_hg38)
+```
+
+### 4. Create consensus peaks
+
+```{r, echo=FALSE}
+bedtools_path = "/Users/yuki/opt/anaconda3/bin/bedtools"
+```
+
+```{r}
+# bedtools_path = 'the directory where bedtools are installed on your computer'
+AD_unionPeaks <- UnionPeaks(EntorhinalCortex_AD_H3K27ac_peaks, celltypePeaks, bedtools_path)
+```
+
+*UnionPeaks()* takes as input the bulk peaks, the list of cell-sorted peaks, and the path to bedtools. It outputs a list of two data frames. The first data frame contains the locations of consensus peaks. The second data frame contains the consensus peaks that are found in both the bulk samples and at least one reference cell type (for each cell type, TRUE means present, FALSE means absent). Both data frames will be used in the following *CelltypeProportion()* function. *UnionPeaks()* also generates a SAF file called 'unionPeaks.saf', which will be used for read counting in the *ReadCounting()* function.
+
+### 5. Read counting
+
+```{r, eval=FALSE, warning=FALSE}
+# unionPeaksSaf = 'the path to the SAF file containing the union peaks'
+# bulkDir = 'the directory path where all the bulk BAM files are located'
+# refDir = 'the directory path where all the reference BAM files are located'
+AD_unionCounts <- ReadCounting(unionPeaksSaf, bulkDir, refDir, threads = 8)
+```
+
+*ReadCounting()* takes as input the path to the SAF file generated for the union peaks by *UnionPeaks()*, the path to bulk BAM files, and the path to reference BAM files. The name of the input BAM files must only contain the sample ID, such as 'SRR5927824.bam' for the sample 'SRR5927824'. It outputs a list containing two data frames: one for bulk counts and one for reference counts. They will be used in the *CelltypeProportion()* function.<br>
+
+For this tutorial, we have done read counting on our own reference and bulk bam files. The results can be loaded from:
+
+```{r}
+data(AD_unionCounts)
+```
+
+### 6. Predict cell type proportions
+
+First, make a table containing two columns. The first column contains the sample ID used in the reference counts table and in the same order. The second column contains the corresponding cell type for each sample.
+
+```{r}
+refSamples <- data.frame(matrix(nrow=12,ncol=2))
+refSamples[,1] <- names(AD_unionCounts$refCounts)
+refSamples[,2] <- rep(c("Astrocyte","Microglia","Neuron","Oligodendrocyte"),each=3)
+```
+
+To predict cell type proportions, run the following function on bulk and reference counts for consensus peaks.
+
+```{r}
+AD_MF <- CelltypeProportion(AD_unionCounts$bulkCounts, AD_unionCounts$refCounts,
+                            AD_unionPeaks$unionPeaks, refSamples, AD_unionPeaks$celltypePeaks)
+```
+
+*CelltypeProportion()* takes as input the bulk and reference counts for consensus peaks, the locations of the consensus peaks, cell type annotations for reference samples, and 'signature peaks', which are consensus peaks that are found in both the bulk and reference samples. This function first calculates length-normalised cpm (counts per million) from raw counts, then calculates the median and variability for reference data, and then runs matrix factorisation on the signature peaks using the R package EPIC. The output is a list containing two items: the first item is the number of signature peaks used, and the second item is a table containing the predicted proportions of each cell type in each bulk sample. The proportion of uncharacterised cell types is also predicted in the 'otherCells' column.
+
+### 7. Plot the predicted cell type proportions in the bulk brain samples.
+
+``` {r, fig.width=7, fig.height=3.5}
+plot_MF_props(AD_MF, sampleLabel=FALSE)
+```
+
+*plot_MF_props()* uses the predicted cell type proportions from *CelltypeProportion()* to generate a stacked bar plot of the proportions of each cell type in each of the bulk brain H3K27ac samples. To add sample labels, set sampleLabels = TRUE.
+
+### 8. Plot the predicted cell type proportions between two phenotype groups.
+
+``` {r, fig.width=5, fig.height=3.5}
+plot_MF_groups(AD_MF, AD_pheno)
+```
+
+*plot_MF_groups()* uses the predicted cell type proportions from *CelltypeProportion()* and the phenotype information for each AD brain sample to generate a violin plot of the proportions of each cell type. The phenotype information is fed into the *plot_MF_groups()* as a data frame containing two columns. The first column 'Sample' has the sample IDs that match those labelling the columns in the counts matrix. The second column 'Group' contains the group to which each sample belongs to, e.g., case or control.
+
+### 9. Plot the correlation between CHAS scores and MF-predicted proportions.
+
+``` {r, fig.width=6, fig.height=5}
+plot_correlation(AD_MF, celltype_scores, AD_pheno)
+```
+
+*plot_correlation()* uses the predicted cell type proportions from *CelltypeProportion()*, the cell type-specific scores generated using *CelltypeScore()*, and the phenotype information for each AD brain sample to generate a correlation plot with correlation R and p values for each cell type. The phenotype information is fed into the *plot_MF_groups()* as a data frame containing two columns. The first column 'Sample' has the sample IDs that match those labelling the columns in the counts matrix. The second column 'Group' contains the group to which each sample belongs to, e.g., case or control.
+
+## Tutorial: CHAS-MF without BAM
+
+This section shows how to use *CHAS-MF* without access to bam files. It requires the cell-type-specific reference peaks to be called on all purified cell samples together, creating a single counts matrix for all purified reference samples that share the same H3K27ac peaks.
+
+### 1. Load the example bulk data
+
+Bulk brain peaks: 
+```{r, eval=FALSE}
+data(EntorhinalCortex_AD_H3K27ac_peaks)
+```
+
+Counts matrix: 
+```{r, eval=FALSE}
+data(EntorhinalCortex_AD_H3K27ac_counts)
+```
+
+Phenotype information: 
+```{r, eval=FALSE}
+data(AD_pheno)
+```
+
+### 2. Load the reference data
+
+<p> The cell-sorted H3K27ac peaks (called on all purified cell samples merged) are available in two human genome reference builds hg19 and hg38.<br> 
+To load the **hg19** peaks and counts (not necessary for this example):</p>
+
+```{r}
+data(ref_H3K27ac_counts_hg19)
+data(ref_H3K27ac_peaks_hg19)
+```
+
+To load the **hg38** peaks:
+
+```{r}
+data(ref_H3K27ac_counts_hg38)
+data(ref_H3K27ac_peaks_hg38)
+```
+
+### 3. Create consensus peaks
+
+Replace 'bedtools_path' with the directory where bedtools are installed on your computer.
+
+```{r, warning=FALSE}
+AD_consensusPeaks <- ConsensusPeaks(EntorhinalCortex_AD_H3K27ac_peaks, EntorhinalCortex_AD_H3K27ac_counts, 
+                                    ref_H3K27ac_peaks_hg38, ref_H3K27ac_counts_hg38, bedtools_path)
+```
+
+*ConsensusPeaks()* takes as input the bulk peaks and counts, the reference peaks and counts, and the path to bedtools. It first  calculates length-normalised cpm (counts per million) from raw bulk and reference counts. Then, it merges bulk and reference peaks to be consensus peaks, and uses the length-normalised cpm for the original bulk and reference peaks as an approximation for the merged consensus peaks. The output is a list of three data frames. The first data frame contains the locations of consensus peaks. The second data frame contains the bulk length-normalised cpm for consensus peaks. The third data frame contains the reference length-normalised cpm for consensus peaks. All three data frames will be used in the following *CelltypeProportion()* function.
+
+### 4. Predict cell type proportions
+
+First, make a table containing two columns. The first column contains the sample ID used in the reference counts table (in this example, in the ref_H3K27ac_counts_hg38 table) and in the same order. The second column contains the corresponding cell type for each sample.
+
+```{r}
+refSamples <- data.frame(matrix(nrow=12,ncol=2))
+refSamples[,1] <- names(ref_H3K27ac_counts_hg38)
+refSamples[,2] <- rep(c("Astrocyte","Microglia","Neuron","Oligodendrocyte"),each=3)
+```
+
+To predict cell type proportions, run the following function on bulk and reference counts for consensus peaks.
+
+```{r}
+AD_MF_noBAM <- CelltypeProportion(AD_consensusPeaks$newBulkTPM, AD_consensusPeaks$newRefTPM, AD_consensusPeaks$consensusPeaks, 
+                                   refSamples, NULL)
+```
+
+*CelltypeProportion()* takes as input the bulk and reference counts for consensus peaks, the locations of the consensus peaks, and cell type annotations for reference samples. The 'signature' input is left as NULL, because *CelltypeProportion()* will automatically select the signature peaks based on reference counts - it only keeps the peaks whose maximum read count in all cell types is >= 5 times higher than the second largest. This ensures that the selected peaks have a high signal in only one cell type, hence a 'signature' for that cell type. *CelltypeProportion()* then run matrix factorisation on the signature peaks using the R package EPIC. The output is a list containing two items: the first item is the number of signature peaks used, and the second item is a table containing the predicted proportions of each cell type in each bulk sample. The proportion of uncharacterised cell types is also predicted in the 'otherCells' column.
+
+### 5. Plot the predicted cell type proportions in the bulk brain samples.
+
+``` {r, fig.width=7, fig.height=3.5}
+plot_MF_props(AD_MF_noBAM, sampleLabel=FALSE)
+```
+
+*plot_MF_props()* uses the predicted cell type proportions from *CelltypeProportion()* to generate a stacked bar plot of the proportions of each cell type in each of the bulk brain H3K27ac samples. To add sample labels, set sampleLabels = TRUE.
+
+### 6. Plot the predicted cell type proportions between two phenotype groups.
+
+``` {r, fig.width=5, fig.height=3.5}
+plot_MF_groups(AD_MF_noBAM, AD_pheno)
+```
+
+*plot_MF_groups()* uses the predicted cell type proportions from *CelltypeProportion()* and the phenotype information for each AD brain sample to generate a violin plot of the proportions of each cell type. The phenotype information is fed into the *plot_MF_groups()* as a data frame containing two columns. The first column 'Sample' has the sample IDs that match those labelling the columns in the counts matrix. The second column 'Group' contains the group to which each sample belongs to, e.g., case or control.
+
+### 7. Plot the correlation between CHAS scores and MF-predicted proportions.
+
+``` {r, fig.width=6, fig.height=5}
+plot_correlation(AD_MF_noBAM, celltype_scores, AD_pheno)
+```
+
+*plot_correlation()* uses the predicted cell type proportions from *CelltypeProportion()*, the cell type-specific scores generated using *CelltypeScore()*, and the phenotype information for each AD brain sample to generate a correlation plot with correlation R and p values for each cell type. The phenotype information is fed into the *plot_MF_groups()* as a data frame containing two columns. The first column 'Sample' has the sample IDs that match those labelling the columns in the counts matrix. The second column 'Group' contains the group to which each sample belongs to, e.g., case or control.
+
+## Session info
+
+<details>
+```{r}
+utils::sessionInfo()
+```
+</details>

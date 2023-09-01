@@ -1,0 +1,16 @@
+citHeader("To cite CHAS in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "CHAS, a deconvolution tool, infers cell type-specific signatures in bulk brain histone acetylation studies of brain disorders",
+  author   = "Kitty B. Murphy, Alexi Nott, Sarah J. Marzi",
+  journal  = "bioRxiv",
+  year     = "2021",
+  volume   = "",
+  number   = "",
+  pages    = "",
+  url      = "https://doi.org/10.1101/2021.09.06.459142",
+  textVersion = paste(
+"CHAS, a deconvolution tool, infers cell type-specific signatures in bulk brain histone acetylation studies of brain disorders. Kitty B. Murphy, Alexi Nott, Sarah J. Marzi. bioRxiv, 2021.09.06.459142; https://doi.org/10.1101/2021.09.06.459142"
+  )
+)

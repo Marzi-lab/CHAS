@@ -7,15 +7,19 @@
 plot_correlation(celltypeProportion, celltypeScores, group)
 }
 \arguments{
-\item{celltypeProportion}{The output list from the function CelltypeProportion()}
+\item{celltypeProportion}{The output list from the function
+\link[CHAS]{CelltypeProportion}.}
 
-\item{celltypeScores}{The output data frame from the function CelltypeScore()}
+\item{celltypeScores}{The output data frame from the function
+\link[CHAS]{CelltypeScore}.}
 
-\item{group}{A data frame containing a column named "Sample" and a column named "Group".}
+\item{group}{A data frame containing a column named "Sample" and
+a column named "Group".}
 }
 \value{
 A plot showing the correlation for each cell type.
 }
 \description{
-This function plots the correlation between matrix-factorisation-predicted cell type proportions and CHAS scores
+This function plots the correlation between matrix-factorisation-predicted
+cell type proportions and CHAS scores
 }

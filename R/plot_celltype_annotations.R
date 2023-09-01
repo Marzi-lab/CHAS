@@ -1,15 +1,18 @@
 #' Plot the proportions of peaks annotated to each cell type
 #'
-#' This function takes as input the output of the function CelltypeSpecificPeaks()
+#' This function takes as input the output of the function
+#' \link[CHAS]{CelltypeSpecificPeaks}
 #' and uses the annotated bulk peaks to plot the proportion of each cell type.
-#' @param annotatedPeaks The output list of data frames from the function CelltypeSpecificPeaks()
+#' @param annotatedPeaks The output list of data frames from the function
+#'  \link[CHAS]{CelltypeSpecificPeaks}
 #' containing the annotated bulk peaks and the cell type-specific bulk peaks.
-#' @return A stacked bar plot showing the proportion of each cell type in the bulk peak set.
+#' @returns A stacked bar plot showing the proportion of each cell type
+#'  in the bulk peak set.
 #' @import ggplot2
 #' @import RColorBrewer
 #' @export
-
 plot_celltype_annotations <- function(annotatedPeaks){
+
   allPeaks = annotatedPeaks[[2]]
   CellTable <- table(allPeaks$Annot)
   PropTable <- data.frame(prop.table(CellTable)*100)

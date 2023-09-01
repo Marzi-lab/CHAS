@@ -7,13 +7,16 @@
 plot_celltype_annotations(annotatedPeaks)
 }
 \arguments{
-\item{annotatedPeaks}{The output list of data frames from the function CelltypeSpecificPeaks()
+\item{annotatedPeaks}{The output list of data frames from the function
+\link[CHAS]{CelltypeSpecificPeaks}
 containing the annotated bulk peaks and the cell type-specific bulk peaks.}
 }
 \value{
-A stacked bar plot showing the proportion of each cell type in the bulk peak set.
+A stacked bar plot showing the proportion of each cell type
+in the bulk peak set.
 }
 \description{
-This function takes as input the output of the function CelltypeSpecificPeaks()
+This function takes as input the output of the function
+\link[CHAS]{CelltypeSpecificPeaks}
 and uses the annotated bulk peaks to plot the proportion of each cell type.
 }

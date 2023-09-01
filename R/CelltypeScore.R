@@ -6,7 +6,7 @@
 #' @param celltypeSpecificPeaks The output list of data frames from the function CelltypeSpecificPeaks() containing
 #' the annotated bulk peaks and the cell type-specific bulk peaks.
 #' @param method Whether mean or median should be used to calculate the score for each sample across cell type-specific peaks.
-#' @return Cell-type-specific histone acetylation scores for each sample.
+#' @returns Cell-type-specific histone acetylation scores for each sample.
 #' @import edgeR
 #' @export
 CelltypeScore <- function(counts, celltypeSpecificPeaks, method) {

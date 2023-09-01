@@ -13,7 +13,8 @@ the second column contains the start position of the peak
 the third column contains the end position of the peak
 the fourth column contains the peak identifier}
 
-\item{refPeakList}{A list containing several data frames, each data frame contains the reference
+\item{refPeakList}{A list containing several data frames,
+each data frame contains the reference
 H3K27ac peaks for one cell type in BED format
 the first column contains the chromosome number, such as 'chr1'
 the second column contains the start position of the peak
@@ -21,7 +22,8 @@ the third column contains the end position of the peak
 the fourth column contains the peak identifier}
 
 \item{bedtools_path}{The path to where bedtools is installed
-for example, in MacOS, this can be checked by runing "\% which bedtools" in Terminal}
+for example, in MacOS, this can be checked by running
+"percent which bedtools" in Terminal}
 }
 \value{
 A list containing two dataframes
@@ -32,5 +34,6 @@ the second data frame contains the cell type-specific peaks
 This function identifies the consensus peaks, and assign cell types to them.
 }
 \details{
-This function takes two inputs, bulk peak location and reference peak location
+This function takes two inputs, bulk peak location and reference
+peak location
 }

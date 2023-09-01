@@ -16,7 +16,7 @@
 #'   the reference sample 'astrocyte_1'.
 #' @param threads The number of threads for running featureCounts. The default is 8.
 #' @import Rsubread
-#' @return A list containing two dataframes
+#' @returns A list containing two dataframes
 #'   the first data frame contains the bulk counts
 #'   the second data frame contains the reference counts
 #' @export

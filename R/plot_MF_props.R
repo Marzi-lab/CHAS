@@ -5,8 +5,9 @@
 #'
 #' @param celltypeProportion The output list from the function CelltypeProportion()
 #' @param sampleLabel Whether or not to add sample labels to the plot. The default is FALSE.
-#' @return A bar plot showing the predicted cell type proportions for each sample.
+#' @returns A bar plot showing the predicted cell type proportions for each sample.
 #' @import RColorBrewer
+#' @import graphics
 #' @export
 
 plot_MF_props <- function(celltypeProportion, sampleLabel = FALSE){
@@ -15,8 +16,8 @@ plot_MF_props <- function(celltypeProportion, sampleLabel = FALSE){
   celltypeProportion[["proportions"]] <- celltypeProportion[["proportions"]]*100
 
   if (sampleLabel == FALSE) {
-    par(mar=c(3, 4, 2, 8), xpd=TRUE)
-    barplot(t(celltypeProportion[["proportions"]]),
+    graphics::par(mar=c(3, 4, 2, 8), xpd=TRUE)
+    graphics::barplot(t(celltypeProportion[["proportions"]]),
             xaxt = "n", xlab = NULL, ylab = NULL, border = NA,
             col = c("#446455", "#FDD262", "#46ACC8", "#F4B5BD",
                     brewer.pal(8, "Accent")[0:x],"#DDDDDD"))
@@ -24,8 +25,10 @@ plot_MF_props <- function(celltypeProportion, sampleLabel = FALSE){
            names(celltypeProportion[["proportions"]]),
            fill = c("#446455", "#FDD262", "#46ACC8", "#F4B5BD",
                     brewer.pal(8, "Accent")[0:x],"#DDDDDD"))
-    mtext("Samples", side=1, line=0.9, font=1, adj = 0.5, cex=1.2)
-    mtext("Predicted proportions (%)", side=2, line=2.5,adj=0.5, font=1,cex=1.2)
+    graphics::mtext("Samples", side=1, line=0.9, font=1,
+                    adj = 0.5, cex=1.2)
+    graphics::mtext("Predicted proportions (%)", side=2, line=2.5,
+                    adj=0.5, font=1,cex=1.2)
   } else {
     par(mar=c(10, 4, 2, 8), xpd=TRUE)
     par(las = 2)

@@ -7,12 +7,15 @@
 plot_MF_groups(celltypeProportion, group)
 }
 \arguments{
-\item{celltypeProportion}{The output list from the function CelltypeProportion()}
+\item{celltypeProportion}{The output list from the function
+\link[CHAS]{CelltypeProportion}.}
 
-\item{group}{A data frame containing a column named "Sample" and a column named "Group".}
+\item{group}{A data frame containing a column named "Sample" and a
+column named "Group".}
 }
 \value{
-A violin plot showing the cell type scores between two different groups.
+A violin plot showing the cell type scores between
+two different groups.
 }
 \description{
 This function creates a violin plot of the predicted cell type proportions,
