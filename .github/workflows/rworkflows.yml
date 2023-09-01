@@ -5,12 +5,14 @@ name: rworkflows
     - master
     - main
     - devel
+    - dev
     - RELEASE_**
   pull_request:
     branches:
     - master
     - main
     - devel
+    - dev
     - RELEASE_**
 jobs:
   rworkflows:
