@@ -273,8 +273,8 @@ refSamples[,2] <- rep(c("Astrocyte","Microglia","Neuron","Oligodendrocyte"),each
 To predict cell type proportions, run the following function on bulk and reference counts for consensus peaks.
 
 ```{r}
-AD_MF <- CelltypeProportion(AD_unionCounts$bulkCounts, AD_unionCounts$refCounts, 
-                                   AD_unionPeaks$unionPeaks, refSamples, AD_unionPeaks$celltypePeaks)
+AD_MF <- CelltypeProportion(AD_unionCounts$bulkCounts, AD_unionCounts$refCounts,
+                            AD_unionPeaks$unionPeaks, refSamples, AD_unionPeaks$celltypePeaks)
 ```
 
 *CelltypeProportion()* takes as input the bulk and reference counts for consensus peaks, the locations of the consensus peaks, cell type annotations for reference samples, and 'signature peaks', which are consensus peaks that are found in both the bulk and reference samples. This function first calculates length-normalised cpm (counts per million) from raw counts, then calculates the median and variability for reference data, and then runs matrix factorisation on the signature peaks using the R package EPIC. The output is a list containing two items: the first item is the number of signature peaks used, and the second item is a table containing the predicted proportions of each cell type in each bulk sample. The proportion of uncharacterised cell types is also predicted in the 'otherCells' column.
@@ -282,10 +282,10 @@ AD_MF <- CelltypeProportion(AD_unionCounts$bulkCounts, AD_unionCounts$refCounts,
 ### 7. Plot the predicted cell type proportions in the bulk brain samples.
 
 ``` {r, fig.width=7, fig.height=3.5}
-plot_MF_props(AD_MF)
+plot_MF_props(AD_MF, sampleLabel=FALSE)
 ```
 
-*plot_MF_props()* uses the predicted cell type proportions from *CelltypeProportion()* to generate a stacked bar plot of the proportions of each cell type in each of the bulk brain H3K27ac samples.
+*plot_MF_props()* uses the predicted cell type proportions from *CelltypeProportion()* to generate a stacked bar plot of the proportions of each cell type in each of the bulk brain H3K27ac samples. To add sample labels, set sampleLabels = TRUE.
 
 ### 8. Plot the predicted cell type proportions between two phenotype groups.
 
@@ -374,10 +374,10 @@ AD_MF_noBAM <- CelltypeProportion(AD_consensusPeaks$newBulkTPM, AD_consensusPeak
 ### 5. Plot the predicted cell type proportions in the bulk brain samples.
 
 ``` {r, fig.width=7, fig.height=3.5}
-plot_MF_props(AD_MF_noBAM)
+plot_MF_props(AD_MF_noBAM, sampleLabel=FALSE)
 ```
 
-*plot_MF_props()* uses the predicted cell type proportions from *CelltypeProportion()* to generate a stacked bar plot of the proportions of each cell type in each of the bulk brain H3K27ac samples.
+*plot_MF_props()* uses the predicted cell type proportions from *CelltypeProportion()* to generate a stacked bar plot of the proportions of each cell type in each of the bulk brain H3K27ac samples. To add sample labels, set sampleLabels = TRUE.
 
 ### 6. Plot the predicted cell type proportions between two phenotype groups.
 
