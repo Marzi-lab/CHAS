@@ -39,51 +39,23 @@
 #' @import edgeR
 #' @export
 
-CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples, signature){
-
+CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples, signature) {
   # Step 1. calculate normalised counts
-  if (length(signature)!=0) {
-    bulkTPM <- newBulkCounts/(newPeaks$V3-newPeaks$V2+1)
-    refTPM <- newRefCounts/(newPeaks$V3-newPeaks$V2+1)
-    bulkTPM <- as.data.frame(edgeR::cpm(bulkTPM))
-    refTPM <- as.data.frame(edgeR::cpm(refTPM))
-  } else {
-    bulkTPM <- newBulkCounts
-    refTPM <- newRefCounts
-  }
+  bulkTPM <- calculate_tpm(newBulkCounts, newPeaks, signature)
+  refTPM <- calculate_tpm(newRefCounts, newPeaks, signature)
 
   # Step 2. calculate the median and variability for reference counts
-  ct = as.numeric(length(unique(refSamples[,2])))
-  pk = as.numeric(nrow(newRefCounts))
-  ref_median <- data.frame(matrix(nrow = pk, ncol = ct))
-  row.names(ref_median) <- row.names(newRefCounts)
-  names(ref_median) <- unique(refSamples[,2])
-  for (x in names(ref_median)) {
-    y <- refTPM[,refSamples[refSamples[,2]==x,1]]
-    ref_median[,x] <- apply(y,1,median)
-  }
-  ref_var <- ref_median
-  for (x in names(ref_var)) {
-    y <- refTPM[,refSamples[refSamples[,2]==x,1]]
-    ref_var[,x] <- (apply(y, 1, max) - apply(y, 1, min))/2
-  }
+  medianAndVariability <- calculate_median_and_variability(refTPM, refSamples)
+  ref_median <- medianAndVariability$median
+  ref_var <- medianAndVariability$var
 
   # Step 3. select signature peaks
-  if (length(signature)!=0) {
-    count <- apply(signature[, 5:(ct+4)], 2, sum)
-  } else {
-    sig <- function(x){sort(x,decreasing=TRUE)[2]}
-    signature <- ref_median[apply(ref_median, 1, max) > 5*apply(ref_median, 1, sig),]
-    is.max <- function(x){x==max(x)}
-    ct_max <- apply(signature,1,is.max)
-    count <- apply(ct_max, 1, sum)
-  }
+  signaturePeaks <- select_signature_peaks(signature, ref_median, ncol(ref_median))
+  signature <- signaturePeaks$signature
+  count <- signaturePeaks$count
 
   # Step 4. run matrix factorisation
-  EPIC_ref <- list('refProfiles'=ref_median,
-                   'sigGenes'=row.names(signature),
-                   'refProfiles.var'=ref_var)
-  suppressWarnings({EPIC_scores <- EPIC::EPIC(bulk = bulkTPM, ref = EPIC_ref)})
+  EPIC_scores <- run_mf(bulkTPM, ref_median, ref_var, signature)
 
   return(list(signaturePeaks = count,
               proportions = as.data.frame(EPIC_scores[["cellFractions"]])))

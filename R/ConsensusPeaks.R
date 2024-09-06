@@ -42,58 +42,81 @@
 ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path){
 
   # Step 1. find consensus peaks in bulk and reference
-  # bulk normalised counts and peaks
-  names(bulkPeaks) <- c("Chr","Start","End","ID")
-  bulkMer <- merge(bulkPeaks, bulkCounts, by.x="ID", by.y="row.names")
-  row.names(bulkMer) <- paste0('bulk_peak_',row.names(bulkMer))
-  bulkMer$ID <- row.names(bulkMer)
-  bulkMer[,5:ncol(bulkMer)] <- bulkMer[,5:ncol(bulkMer)]/(bulkMer$End-bulkMer$Start+1)
-  bulkMer[,5:ncol(bulkMer)] <- edgeR::cpm(bulkMer[,5:ncol(bulkMer)])
-  # reference normalised counts and peaks
+  # merge bulk counts and peaks
+  names(bulkPeaks) <- c("Chr", "Start", "End", "ID")
+  mergedBulk <- merge(bulkPeaks, bulkCounts, by.x = "ID", by.y = "row.names")
+  row.names(mergedBulk) <- paste0('bulk_peak_', row.names(mergedBulk))
+  mergedBulk$ID <- row.names(mergedBulk)
+  mergedBulk[, 5:ncol(mergedBulk)] <- mergedBulk[, 5:ncol(mergedBulk)] / (mergedBulk$End - mergedBulk$Start + 1)
+  # normalise bulk counts
+  mergedBulk[, 5:ncol(mergedBulk)] <- edgeR::cpm(mergedBulk[, 5:ncol(mergedBulk)])
+
+  # merge reference counts and peaks
   names(refPeaks) <- c("Chr","Start","End","ID")
-  refMer <- merge(refPeaks, refCounts, by.x="ID", by.y="row.names")
-  row.names(refMer) <- paste0('ref_peak_',row.names(refMer))
-  refMer$ID <- row.names(refMer)
-  refMer[,5:ncol(refMer)] <- refMer[,5:ncol(refMer)]/(refMer$End-refMer$Start+1)
-  refMer[,5:ncol(refMer)] <- edgeR::cpm(refMer[,5:ncol(refMer)])
-  # merge bulk & reference peaks
-  mer <- rbind(bulkMer[,1:4], refMer[,1:4])
-  mer$No <- sub('chr', '', mer$Chr)
-  mer$No <- stri_replace_all_regex(mer$No, pattern=c('X', 'Y'), replacement=c('23', '24'), vectorize=FALSE)
-  mer$No <- as.numeric(mer$No)
-  mer <- mer[order(mer$No,mer$Start),]
-  mer <- mer[,c(2:4,1)]
-  write.table(mer, 'input.bed', row.names = FALSE, col.names = FALSE, sep = '\t', quote=FALSE)
-  # bedtools merge
-  system(paste("cd",getwd()))
-  system(paste(bedtools_path,"merge -i input.bed -c 4 -o distinct -d 20 > output.bed"))
+  mergedRef <- merge(refPeaks, refCounts, by.x="ID", by.y="row.names")
+  row.names(mergedRef) <- paste0('ref_peak_',row.names(mergedRef))
+  mergedRef$ID <- row.names(mergedRef)
+  mergedRef[,5:ncol(mergedRef)] <- mergedRef[,5:ncol(mergedRef)]/(mergedRef$End-mergedRef$Start+1)
+  # normalise reference counts
+  mergedRef[,5:ncol(mergedRef)] <- edgeR::cpm(mergedRef[,5:ncol(mergedRef)])
+
+  # merge bulk and reference peaks
+  mergedPeaks <- rbind(mergedBulk[,1:4], mergedRef[,1:4])
+  mergedPeaks$No <- sub('chr', '', mergedPeaks$Chr)
+  mergedPeaks$No <- stri_replace_all_regex(mergedPeaks$No, pattern=c('X', 'Y'), replacement=c('23', '24'), vectorize=FALSE)
+  mergedPeaks$No <- as.numeric(mergedPeaks$No)
+  mergedPeaks <- mergedPeaks[order(mergedPeaks$No,mergedPeaks$Start),]
+  mergedPeaks <- mergedPeaks[,c(2:4,1)]
+
+  # Convert merged peaks to GRanges object
+  mergedGR <- GRanges(seqnames = mergedPeaks[, 1],
+                      ranges = IRanges(start = mergedPeaks[, 2], end = mergedPeaks[, 3]),
+                      peakID = mergedPeaks[, 4])
+
+  # Reduce the GRanges object to find the consensus of all peaks
+  consensusGR <- reduce(mergedGR, min.gapwidth = 20)
+
+  # Find overlaps between the reduced peaks and all original peaks
+  overlaps <- findOverlaps(consensusGR, mergedGR)
+
+  # Create a metadata column for the reduced peaks
+  reducedPeakIDs <- tapply(subjectHits(overlaps), queryHits(overlaps),
+                           function(x) paste(mergedGR$peakID[x], collapse = ", "))
+
+  # Add the metadata to the reduced GRanges object
+  mcols(consensusGR)$peakID <- as.character(reducedPeakIDs)
+
+  # Convert back to a data frame and convert to bed format
+  consensusPeaks <- as.data.frame(consensusGR)
+  consensusPeaks <- consensusPeaks[,c(1,2,3,6)]
 
   # Step 2. assign new identifiers to consensus peaks
   # consensus peaks
-  mer_out <- read.table("output.bed")
-  mer_out$both <- grepl('ref', mer_out$V4, fixed = TRUE) + grepl('bulk', mer_out$V4, fixed = TRUE)
-  mer_out <- mer_out[mer_out$both==2,][,1:4]
-  row.names(mer_out) = NULL
-  names(mer_out) <- c('Chr_consensus','Start_consensus','End_consensus','Annot')
+  consensusPeaks$both <- grepl('ref', consensusPeaks[[4]], fixed = TRUE) + grepl('bulk', consensusPeaks[[4]], fixed = TRUE)
+  consensusPeaks <- consensusPeaks[consensusPeaks$both==2,][,1:4]
+  row.names(consensusPeaks) = NULL
+  names(consensusPeaks) <- c('Chr_consensus','Start_consensus','End_consensus','Annot')
+
   # assign new IDs in bulk & ref
-  mer_out$ID_consensus <- row.names(mer_out)
-  mer_out$ID_consensus <- paste0('consensus_peak_', mer_out$ID_consensus)
-  mer_out$ID_ref <- gsub(".*ref","ref",mer_out$Annot) # ref peak ID
-  mer_out$ID_bulk <- paste0(gsub(",.*", "", mer_out$Annot)) # bulk peak ID
+  consensusPeaks$ID_consensus <- row.names(consensusPeaks)
+  consensusPeaks$ID_consensus <- paste0('consensus_peak_', consensusPeaks$ID_consensus)
+  consensusPeaks$ID_ref <- gsub(".*ref","ref",consensusPeaks$Annot) # ref peak ID
+  consensusPeaks$ID_bulk <- paste0(gsub(",.*", "", consensusPeaks$Annot)) # bulk peak ID
 
   # Step 3. filter bulk & reference counts
   # bulk counts for consensus peaks
-  bulkFil <- merge(mer_out[,c("ID_consensus","ID_bulk")], bulkMer, by.x='ID_bulk', by.y='ID')
-  row.names(bulkFil) <- bulkFil$ID_consensus
-  bulkFil$ID_consensus <- as.numeric(sub("consensus_peak_","",bulkFil$ID_consensus))
-  bulkFil <- bulkFil[order(bulkFil$ID_consensus),]
-  bulkFil <- bulkFil[,6:ncol(bulkFil)]
-  # reference counts for consensus peaks
-  refFil <- merge(mer_out[,c("ID_consensus","ID_ref")], refMer, by.x='ID_ref', by.y='ID')
-  row.names(refFil) <- refFil$ID_consensus
-  refFil$ID_consensus <- as.numeric(sub("consensus_peak_","",refFil$ID_consensus))
-  refFil <- refFil[order(refFil$ID_consensus),]
-  refFil <- refFil[,6:ncol(refFil)]
+  bulkFilt <- merge(consensusPeaks[,c("ID_consensus","ID_bulk")], mergedBulk, by.x='ID_bulk', by.y='ID')
+  row.names(bulkFilt) <- bulkFilt$ID_consensus
+  bulkFilt$ID_consensus <- as.numeric(sub("consensus_peak_","",bulkFilt$ID_consensus))
+  bulkFilt <- bulkFilt[order(bulkFilt$ID_consensus),]
+  bulkFilt <- bulkFilt[,6:ncol(bulkFilt)]
 
-  return(list(consensusPeaks=mer_out, newBulkTPM=bulkFil, newRefTPM=refFil))
+  # reference counts for consensus peaks
+  refFilt <- merge(consensusPeaks[,c("ID_consensus","ID_ref")], mergedRef, by.x='ID_ref', by.y='ID')
+  row.names(refFilt) <- refFilt$ID_consensus
+  refFilt$ID_consensus <- as.numeric(sub("consensus_peak_","",refFilt$ID_consensus))
+  refFilt <- refFilt[order(refFilt$ID_consensus),]
+  refFilt <- refFilt[,6:ncol(refFilt)]
+
+  return(list(consensusPeaks=consensusPeaks, newBulkTPM=bulkFilt, newRefTPM=refFilt))
 }
