@@ -4,7 +4,7 @@
 \alias{UnionPeaks}
 \title{Find Union Peaks}
 \usage{
-UnionPeaks(bulkPeaks, refPeakList, bedtools_path)
+UnionPeaks(bulkPeaks, refPeakList)
 }
 \arguments{
 \item{bulkPeaks}{A data frame of bulk H3K27ac peaks in BED format
@@ -19,18 +19,12 @@ the first column contains the chromosome number, such as 'chr1'
 the second column contains the start position of the peak
 the third column contains the end position of the peak
 the fourth column contains the peak identifier}
-
-\item{bedtools_path}{The path to where bedtools is installed
-for example, in MacOS, this can be checked by runing "\% which bedtools" in Terminal}
 }
 \value{
-A list containing two dataframes
+A list containing two data frames
 the first data frame contains the consensus peaks
 the second data frame contains the cell type-specific peaks
 }
 \description{
-This function identifies the consensus peaks, and assign cell types to them.
-}
-\details{
-This function takes two inputs, bulk peak location and reference peak location
+This function identifies the consensus peaks and assigns cell types to them.
 }
