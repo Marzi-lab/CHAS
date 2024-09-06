@@ -15,7 +15,9 @@ for up-to-date instructions on usage.
 
 CHAS workflow 
 ------
-![alt text](https://github.com/KittyMurphy/CHAS/blob/master/CHAS_workflow.png)
+![CHAS workflow](https://github.com/KittyMurphy/CHAS/blob/master/CHAS_workflow.png)
+
+
 
 ## Citation
 
