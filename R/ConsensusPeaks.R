@@ -30,8 +30,6 @@
 #' @param refCounts A counts matrix for reference data
 #'   the rows represent peaks, using the same identifier as refPeaks
 #'   the columns represent cell-type samples, and can have one or multiple samples for each cell type
-#' @param bedtools_path The path to where bedtools is installed
-#'   for example, in MacOS, this can be checked by runing "% which bedtools" in Terminal
 #' @return A list containing the following:
 #'   [1] data frame: bulk counts for consensus peaks
 #'   [2] data frame: reference counts for consensus peaks
@@ -39,7 +37,7 @@
 #' @import edgeR
 #' @export
 
-ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path){
+ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts){
 
   # Step 1. find consensus peaks in bulk and reference
   # merge bulk counts and peaks
@@ -118,5 +116,5 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts,bedtools_path
   refFilt <- refFilt[order(refFilt$ID_consensus),]
   refFilt <- refFilt[,6:ncol(refFilt)]
 
-  return(list(consensusPeaks=consensusPeaks, newBulkTPM=bulkFilt, newRefTPM=refFilt))
+  return(list(consensusPeaks=consensusPeaks, newBulkCPM=bulkFilt, newRefCPM=refFilt))
 }

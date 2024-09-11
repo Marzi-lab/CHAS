@@ -41,11 +41,11 @@
 
 CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples, signature) {
   # Step 1. calculate normalised counts
-  bulkTPM <- calculate_tpm(newBulkCounts, newPeaks, signature)
-  refTPM <- calculate_tpm(newRefCounts, newPeaks, signature)
+  bulkCPM <- calculate_cpm(newBulkCounts, newPeaks, signature)
+  refCPM <- calculate_cpm(newRefCounts, newPeaks, signature)
 
   # Step 2. calculate the median and variability for reference counts
-  medianAndVariability <- calculate_median_and_variability(refTPM, refSamples)
+  medianAndVariability <- calculate_median_and_variability(refCPM, refSamples)
   ref_median <- medianAndVariability$median
   ref_var <- medianAndVariability$var
 
@@ -55,7 +55,7 @@ CelltypeProportion <- function(newBulkCounts, newRefCounts, newPeaks, refSamples
   count <- signaturePeaks$count
 
   # Step 4. run matrix factorisation
-  EPIC_scores <- run_mf(bulkTPM, ref_median, ref_var, signature)
+  EPIC_scores <- run_mf(bulkCPM, ref_median, ref_var, signature)
 
   return(list(signaturePeaks = count,
               proportions = as.data.frame(EPIC_scores[["cellFractions"]])))

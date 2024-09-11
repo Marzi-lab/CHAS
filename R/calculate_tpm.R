@@ -1,19 +1,19 @@
-#' Calculate TPM
+#' Calculate cpm
 #'
-#' This function calculates the Transcripts Per Million (TPM) for the given counts, peaks, and signature.
+#' This function calculates the Transcripts Per Million (cpm) for the given counts, peaks, and signature.
 #'
 #' @param counts The counts data frame.
 #' @param peaks The peaks data frame.
 #' @param signature The signature vector.
 #'
-#' @return A data frame of TPM values.
+#' @return A data frame of cpm values.
 #' @export
-calculate_tpm <- function(counts, peaks, signature) {
+calculate_cpm <- function(counts, peaks, signature) {
   if (length(signature) != 0) {
-    tpm <- counts / (peaks[[3]] - peaks[[2]] + 1)
-    tpm <- as.data.frame(edgeR::cpm(tpm))
+    counts2 <- counts / (peaks[[3]] - peaks[[2]] + 1)
+    cpm <- as.data.frame(edgeR::cpm(counts2))
   } else {
-    tpm <- counts
+    cpm <- counts2
   }
-  return(tpm)
+  return(cpm)
 }

@@ -16,6 +16,7 @@
 #'   the fourth column contains the peak identifier
 #' @import GenomicRanges
 #' @import tidyverse
+#' @import S4Vectors
 #' @return A list containing two data frames
 #'   the first data frame contains the consensus peaks
 #'   the second data frame contains the cell type-specific peaks
