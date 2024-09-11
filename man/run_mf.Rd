@@ -4,10 +4,10 @@
 \alias{run_mf}
 \title{Run Matrix Factorisation}
 \usage{
-run_mf(bulkTPM, ref_median, ref_var, signature)
+run_mf(bulkCPM, ref_median, ref_var, signature)
 }
 \arguments{
-\item{bulkTPM}{The bulk TPM data frame.}
+\item{bulkCPM}{The bulk CPM data frame.}
 
 \item{ref_median}{The reference median data frame.}
 

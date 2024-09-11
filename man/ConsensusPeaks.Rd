@@ -4,7 +4,7 @@
 \alias{ConsensusPeaks}
 \title{Find Consensus Peaks}
 \usage{
-ConsensusPeaks(bulkPeaks, bulkCounts, refPeaks, refCounts, bedtools_path)
+ConsensusPeaks(bulkPeaks, bulkCounts, refPeaks, refCounts)
 }
 \arguments{
 \item{bulkPeaks}{A data frame of bulk H3K27ac peaks in BED format
@@ -26,9 +26,6 @@ the fourth column contains the peak identifier}
 \item{refCounts}{A counts matrix for reference data
 the rows represent peaks, using the same identifier as refPeaks
 the columns represent cell-type samples, and can have one or multiple samples for each cell type}
-
-\item{bedtools_path}{The path to where bedtools is installed
-for example, in MacOS, this can be checked by runing "\% which bedtools" in Terminal}
 }
 \value{
 A list containing the following:

@@ -2,12 +2,12 @@
 % Please edit documentation in R/calculate_median_and_variability.R
 \name{calculate_median_and_variability}
 \alias{calculate_median_and_variability}
-\title{Calculate Median and Variability}
+\title{Calculate Median and variability}
 \usage{
-calculate_median_and_variability(tpm, samples)
+calculate_median_and_variability(cpm, samples)
 }
 \arguments{
-\item{tpm}{The TPM data frame.}
+\item{cpm}{The cpm data frame.}
 
 \item{samples}{The samples data frame.}
 }
