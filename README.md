@@ -10,7 +10,7 @@ If you use CHAS, please cite our preprint: [Murphy, Nott & Marzi. CHAS, a deconv
 Tutorial 
 ------
 See the [CHAS vignette
-website](https://neurogenomics.github.io/CHAS/CHAS.html)
+website](https://Marzi-Lab.github.io/CHAS/CHAS.html)
 for up-to-date instructions on usage.
 
 CHAS workflow 
