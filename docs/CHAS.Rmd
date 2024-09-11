@@ -231,7 +231,6 @@ celltypePeaks <- list(Astrocyte = astro_H3K27ac_hg38, Microglia = mgl_H3K27ac_hg
 ### 4. Create consensus peaks
 
 ```{r}
-# bedtools_path = 'the directory where bedtools are installed on your computer'
 AD_unionPeaks <- UnionPeaks(EntorhinalCortex_AD_H3K27ac_peaks, celltypePeaks)
 ```
 
@@ -337,8 +336,6 @@ data(ref_H3K27ac_peaks_hg38)
 ```
 
 ### 3. Create consensus peaks
-
-Replace 'bedtools_path' with the directory where bedtools are installed on your computer.
 
 ```{r, warning=FALSE}
 AD_consensusPeaks <- ConsensusPeaks(EntorhinalCortex_AD_H3K27ac_peaks, EntorhinalCortex_AD_H3K27ac_counts, 
