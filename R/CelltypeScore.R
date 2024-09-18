@@ -12,19 +12,36 @@
 CelltypeScore <- function(counts, celltypeSpecificPeaks, method) {
   cpm <- edgeR::cpm(counts)
   celltypeSpecific = celltypeSpecificPeaks[[1]]
-  celltypeSpecific_dedup = celltypeSpecific[!duplicated(celltypeSpecific[,1]),]
+  celltypeSpecific_dedup = celltypeSpecific[!duplicated(celltypeSpecific[, 1]), ]
   max_reads <- apply(cpm, 1, max)
-  cpm_divByMax <- sweep(cpm, 1, max_reads, FUN="/")
+  cpm_divByMax <- sweep(cpm, 1, max_reads, FUN = "/")
   celltypeSpecific_split <- split(celltypeSpecific_dedup, celltypeSpecific_dedup$Celltype)
-  scores <- lapply(names(celltypeSpecific_split), function(x){
+
+  # Calculate lengths
+  lengths <- sapply(celltypeSpecific_split, function(x) nrow(x))
+
+  # Normalize lengths to use as weights (could adjust this normalization method)
+  max_length <- max(lengths)
+  weights <- lengths / max_length
+
+  scores <- lapply(names(celltypeSpecific_split), function(x) {
     celltypeSpecificPeakNames <- as.character(celltypeSpecific_split[[x]][[1]])
-    cpmFiltered <- cpm_divByMax[row.names(cpm_divByMax) %in% celltypeSpecificPeakNames,]
-    scores <- as.data.frame(apply(cpmFiltered, 2, method))
+    cpmFiltered <- cpm_divByMax[row.names(cpm_divByMax) %in% celltypeSpecificPeakNames, ]
+
+    # Calculate scores using the specified method
+    tempScores <- apply(cpmFiltered, 2, method)
+
+    # Adjust scores by weights
+    weightedScores <- tempScores * weights[x]
+
+    scores <- as.data.frame(weightedScores)
     scores$Celltype <- x
     scores$Sample <- colnames(cpmFiltered)
     names(scores) <- c("Score", "Celltype", "Sample")
     return(scores)
-  }
-  )
+  })
+
   scores <- do.call("rbind", scores)
+
+  return(scores)
 }
