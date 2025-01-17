@@ -8,6 +8,7 @@
 #'
 #' @return A data frame of cpm values.
 #' @export
+#' @rdname calculate_cpm
 calculate_cpm <- function(counts, peaks, signature) {
   if (length(signature) != 0) {
     counts2 <- counts / (peaks[[3]] - peaks[[2]] + 1)
