@@ -35,7 +35,7 @@ Installing CHAS
 if (!require("remotes")) {
   install.packages("remotes")
 }
-remotes::install_github("neurogenomics/CHAS")
+remotes::install_github("Marzi-Lab/CHAS")
 ```
 You can then load the package and data package:
 ```
