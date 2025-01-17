@@ -9,8 +9,7 @@ Authors@R:
            email = "c.murphy19@ic.ac.uk",
            comment = c(ORCID = "YOUR-ORCID-ID"))
 biocViews:
-Imports: 
-    EPIC,
+Imports:
     data.table,
     dplyr,
     edgeR,
@@ -25,8 +24,9 @@ Imports:
     tidyverse,
     wesanderson, 
     ggpattern,
-    S4Vectors,
-EPIC 
+    S4Vectors
+Remotes:
+    GfellerLab/EPIC
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
