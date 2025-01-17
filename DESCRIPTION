@@ -10,6 +10,7 @@ Authors@R:
            comment = c(ORCID = "YOUR-ORCID-ID"))
 biocViews:
 Imports: 
+    EPIC,
     data.table,
     dplyr,
     edgeR,
@@ -24,7 +25,8 @@ Imports:
     tidyverse,
     wesanderson, 
     ggpattern,
-    S4Vectors
+    S4Vectors,
+EPIC 
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
