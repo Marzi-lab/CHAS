@@ -96,10 +96,11 @@ ConsensusPeaks <- function(bulkPeaks,bulkCounts,refPeaks,refCounts){
   names(consensusPeaks) <- c('Chr_consensus','Start_consensus','End_consensus','Annot')
 
   # assign new IDs in bulk & ref
-  consensusPeaks$ID_consensus <- row.names(consensusPeaks)
-  consensusPeaks$ID_consensus <- paste0('consensus_peak_', consensusPeaks$ID_consensus)
-  consensusPeaks$ID_ref <- gsub(".*ref","ref",consensusPeaks$Annot) # ref peak ID
-  consensusPeaks$ID_bulk <- paste0(gsub(",.*", "", consensusPeaks$Annot)) # bulk peak ID
+  consensusPeaks$ID_ref <- gsub(".*, (ref_peak_[^,]+).*", "\\1", consensusPeaks$Annot)
+  consensusPeaks$ID_ref <- gsub("^(ref_peak_[^,]+),.*", "\\1", consensusPeaks$ID_ref)
+
+  consensusPeaks$ID_bulk <- gsub(".*, (bulk_peak_[^,]+).*", "\\1", consensusPeaks$Annot)
+  consensusPeaks$ID_bulk <- gsub("^(bulk_peak_[^,]+),.*", "\\1", consensusPeaks$ID_bulk)
 
   # Step 3. filter bulk & reference counts
   # bulk counts for consensus peaks
