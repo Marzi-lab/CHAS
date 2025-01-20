@@ -14,7 +14,7 @@ calculate_cpm <- function(counts, peaks, signature) {
     counts2 <- counts / (peaks[[3]] - peaks[[2]] + 1)
     cpm <- as.data.frame(edgeR::cpm(counts2))
   } else {
-    cpm <- counts2
+    cpm <- counts
   }
   return(cpm)
 }
