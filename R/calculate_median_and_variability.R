@@ -19,6 +19,6 @@ calculate_median_and_variability <- function(cpm, samples) {
     median_df[,sample_name] <- apply(sample_data, 1, median)
     range_df[,sample_name] <- (apply(sample_data, 1, max) - apply(sample_data, 1, min)) / 2
   }
-  return(list(median = median_df, range = range_df))
+  return(list(median = median_df, var = range_df))
 }
 
