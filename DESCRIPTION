@@ -24,7 +24,8 @@ Imports:
     tidyverse,
     wesanderson, 
     ggpattern,
-    S4Vectors
+    S4Vectors,
+    ggridges
 Remotes:
     GfellerLab/EPIC
 License: GPL (>= 3) + file LICENSE
